@@ -3,8 +3,9 @@
 import React, { FC } from "react";
 import DraggableCard from "@/components/organisms/features/operation/DraggableCard";
 import { useDroppable } from "@dnd-kit/core";
-import { Reservation, Status } from "@/types/model/type";
+import { Status } from "@/types/model/type";
 import CardContext from "@/components/organisms/features/operation/CardContext";
+import { Reservation } from "@/types/model/reservation";
 
 interface DroppableColumnProps {
   status: Status;

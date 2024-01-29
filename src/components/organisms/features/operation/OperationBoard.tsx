@@ -2,11 +2,10 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import {
-  closestCenter,
   DndContext,
+  DragOverlay,
   DragEndEvent,
   DragOverEvent,
-  DragOverlay,
   DragStartEvent,
   PointerSensor,
   TouchSensor,
@@ -19,14 +18,14 @@ import {
   DONE,
   IN_PROGRESS,
   PENDING,
-  Reservation,
-  StoreStaff,
   Status,
   WAITING,
 } from "@/types/model/type";
 import { isBrowser } from "@emotion/utils";
 import DraggableCard from "@/components/organisms/features/operation/DraggableCard";
 import CardContext from "@/components/organisms/features/operation/CardContext";
+import { Reservation } from "@/types/model/reservation";
+import { StoreStaff } from "@/types/model/staff";
 
 const OperationBoard = () => {
   const [isMounted, setIsMounted] = useState(false);

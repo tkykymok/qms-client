@@ -7,10 +7,10 @@ import {
   DONE,
   IN_PROGRESS,
   PENDING,
-  Reservation,
   Status,
   WAITING,
 } from "@/types/model/type";
+import { Reservation } from "@/types/model/reservation";
 
 interface CardContextProps {
   reservation: Reservation;
