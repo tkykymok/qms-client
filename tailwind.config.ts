@@ -1,20 +1,49 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
+      backgroundColor: {
+        "bg-light": "#F5F5F5",
+        waiting: "#AFEEEE",
+        "waiting-child": "#E8F8F8",
+        "in-progress": "#FFE4B5",
+        "in-progress-child": "#FFF5CC",
+        done: "#90EE90",
+        "done-child": "#E5F4E5",
+        cancelled: "#FFC0CB",
+        "cancelled-child": "#FFE0E0",
+        pending: "#E6E6FA",
+        "pending-child": "#F2F2FA",
+        "drag-child": "#98FB98",
+      },
+      minHeight: {
+        20: "5rem",
+        24: "6rem",
+      },
+      maxHeight: {
+        104: "26rem",
+        112: "28rem",
+        120: "30rem",
+        128: "32rem",
+        136: "34rem",
+        144: "36rem",
+        152: "38rem",
+        160: "40rem",
+        168: "42rem",
+      },
       backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic":
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
     },
   },
   plugins: [],
-}
-export default config
+};
+export default config;

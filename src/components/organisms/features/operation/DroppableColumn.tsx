@@ -36,42 +36,39 @@ const DroppableColumn: FC<DroppableColumnProps> = ({
         rounded-md
         bg-white
         shadow-xl
-        overflow-y-auto
         transition-all
         duration-300
-        'border-2 border-green-400'
       `}
     >
-      <>
-        <div className="sticky top-0 bg-white text-neutral-700 font-medium select-none z-10">
-          <div className={`p-5 flex justify-between`}>
-            <div className="flex">
-              <div>{title}</div>
-              <span className="flex transition group-open:rotate-180 group-open:items-end">
-                <svg fill="none" height="24" stroke="currentColor" width="24">
-                  <path d="M6 9l6 6 6-6"></path>
-                </svg>
-              </span>
-            </div>
-            <div className="flex text-lg">11</div>
+      <div className="sticky top-0 bg-white text-neutral-700 font-medium select-none z-10">
+        <div className={`p-5 flex justify-between`}>
+          <div className="flex">
+            <div>{title}</div>
+            <span className="flex transition group-open:rotate-180 group-open:items-end">
+              <svg fill="none" height="24" stroke="currentColor" width="24">
+                <path d="M6 9l6 6 6-6"></path>
+              </svg>
+            </span>
           </div>
-          <hr />
+          <div className="flex text-lg">11</div>
         </div>
-        <div className="flex flex-wrap min-h-24 py-2 pr-5">
-          <div className={`m-3 w-full`}>
-            {reservations.map((reservation) => (
-              <DraggableCard
-                key={reservation.reservationId}
-                reservationId={reservation.reservationId}
-                reservation={reservation}
-                isDraggable={true}
-              >
-                <CardContext reservation={reservation} isDraggable={true} />
-              </DraggableCard>
-            ))}
-          </div>
+        <hr />
+      </div>
+
+      <div className="flex flex-wrap min-h-24">
+        <div className={`w-full`}>
+          {reservations.map((reservation) => (
+            <DraggableCard
+              key={reservation.reservationId}
+              reservationId={reservation.reservationId}
+              reservation={reservation}
+              isDraggable={true}
+            >
+              <CardContext reservation={reservation} isDraggable={true} />
+            </DraggableCard>
+          ))}
         </div>
-      </>
+      </div>
     </div>
   );
 };

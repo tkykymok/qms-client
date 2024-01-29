@@ -5,6 +5,7 @@ import {
   closestCenter,
   DndContext,
   DragEndEvent,
+  DragOverEvent,
   DragOverlay,
   DragStartEvent,
   PointerSensor,
@@ -267,6 +268,7 @@ const OperationBoard = () => {
    * @param active
    */
   const handleDragStart = ({ active }: DragStartEvent) => {
+    console.log(active);
     const { reservation } = active.data.current || {};
     if (reservation) {
       setActiveCard(reservation);
@@ -304,50 +306,32 @@ const OperationBoard = () => {
     setReservations(updatedReservations);
   };
 
+  const handleDragOver = ({ over }: DragOverEvent) => {
+    console.log(over);
+  };
+
   return (
-    <div className="min-h-screen w-full bg-green-200">
+    <div className="min-h-screen w-full bg-green-100">
       <DndContext
-        collisionDetection={closestCenter}
+        sensors={sensors}
         onDragEnd={handleDragEnd}
         onDragStart={handleDragStart}
-        autoScroll={false}
+        onDragOver={handleDragOver}
       >
-        <DragOverlay>
-          {activeCard && (
-            <DraggableCard
-              key={activeCard.reservationId}
-              reservationId={activeCard.reservationId}
-              reservation={activeCard}
-              isDraggable={true}
-            >
-              <CardContext
-                reservation={activeCard}
-                isDraggable={false}
-                forOverlay={true}
-              />
-            </DraggableCard>
-          )}
-        </DragOverlay>
-
-        <div className="w-full flex h-full space-x-10">
+        <div className="flex space-x-10">
           <div className="flex-1 flex-col mt-3 space-y-7 overflow-y-auto">
-            <div>
-              {/* 保留カラム */}
-              <DroppableColumn
-                status={PENDING}
-                title="保留"
-                reservations={reservationsMap.get(PENDING)}
-              />
-            </div>
-
-            <div>
-              {/* 案内待ちカラム */}
-              <DroppableColumn
-                status={WAITING}
-                title="案内待ち"
-                reservations={reservationsMap.get(WAITING)}
-              />
-            </div>
+            {/* 保留カラム */}
+            <DroppableColumn
+              status={PENDING}
+              title="保留"
+              reservations={reservationsMap.get(PENDING)}
+            />
+            {/* 案内待ちカラム */}
+            <DroppableColumn
+              status={WAITING}
+              title="案内待ち"
+              reservations={reservationsMap.get(WAITING)}
+            />
           </div>
 
           {/* スタッフカラム */}
@@ -366,24 +350,37 @@ const OperationBoard = () => {
           </div>
 
           <div className="flex-1 flex-col mt-3 space-y-7 overflow-y-auto">
-            <div>
-              {/* 取消カラム */}
-              <DroppableColumn
-                status={CANCELED}
-                title="取消"
-                reservations={reservationsMap.get(CANCELED)}
-              />
-            </div>
-            <div>
-              {/* 案内済みカラム */}
-              <DroppableColumn
-                status={DONE}
-                title="案内済み"
-                reservations={reservationsMap.get(DONE)}
-              />
-            </div>
+            {/* 取消カラム */}
+            <DroppableColumn
+              status={CANCELED}
+              title="取消"
+              reservations={reservationsMap.get(CANCELED)}
+            />
+            {/* 案内済みカラム */}
+            <DroppableColumn
+              status={DONE}
+              title="案内済み"
+              reservations={reservationsMap.get(DONE)}
+            />
           </div>
         </div>
+
+        <DragOverlay>
+          {activeCard && (
+            <DraggableCard
+              key={activeCard.reservationId}
+              reservationId={activeCard.reservationId}
+              reservation={activeCard}
+              isDraggable={false}
+            >
+              <CardContext
+                reservation={activeCard}
+                isDraggable={false}
+                forOverlay={true}
+              />
+            </DraggableCard>
+          )}
+        </DragOverlay>
       </DndContext>
     </div>
   );

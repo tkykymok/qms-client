@@ -47,7 +47,7 @@ const CardContext: FC<CardContextProps> = ({
 
   return (
     <div
-      className={`p-1 rounded-md shadow-xl select-none ${opacityClass} ${backgroundColor}`}
+      className={`p-1 rounded-md shadow-lg select-none ${opacityClass} ${backgroundColor}`}
       style={rotationStyle}
     >
       <div className="text-neutral-800 p-3">
@@ -62,13 +62,14 @@ const CardContext: FC<CardContextProps> = ({
           </div>
           <div>{reservation.customerLastName}</div>
         </div>
-        {(reservation.status === WAITING ||
-          reservation.status === IN_PROGRESS) && (
-          <>
-            <hr className="bg-white my-1" />
-            <div>{reservation.menuName}</div>
-          </>
-        )}
+        {!forOverlay &&
+          (reservation.status === WAITING ||
+            reservation.status === IN_PROGRESS) && (
+            <>
+              <hr className="bg-white my-1" />
+              <div>{reservation.menuName}</div>
+            </>
+          )}
       </div>
     </div>
   );

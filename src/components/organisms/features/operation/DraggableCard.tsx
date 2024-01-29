@@ -23,8 +23,17 @@ const DraggableCard: FC<DraggableCardProps> = ({
     disabled: !isDraggable,
   });
 
+  const activeReservation = active?.data?.current?.reservation;
+
   return (
-    <div ref={setNodeRef} className={``} {...listeners} {...attributes}>
+    <div
+      ref={setNodeRef}
+      className={`m-3 
+        ${activeReservation?.reservationId === reservationId ? "opacity-20" : ""}
+     `}
+      {...listeners}
+      {...attributes}
+    >
       {children}
     </div>
   );
