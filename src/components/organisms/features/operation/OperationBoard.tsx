@@ -23,7 +23,7 @@ import {
   StoreStaff,
   Status,
   WAITING,
-} from "@/model/type";
+} from "@/types/model/type";
 import { isBrowser } from "@emotion/utils";
 import DraggableCard from "@/components/organisms/features/operation/DraggableCard";
 import CardContext from "@/components/organisms/features/operation/CardContext";

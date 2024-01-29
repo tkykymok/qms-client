@@ -3,7 +3,7 @@
 import React, { FC } from "react";
 import DraggableCard from "@/components/organisms/features/operation/DraggableCard";
 import { useDroppable } from "@dnd-kit/core";
-import { Reservation, Status } from "@/model/type";
+import { Reservation, Status } from "@/types/model/type";
 import CardContext from "@/components/organisms/features/operation/CardContext";
 
 interface DroppableColumnProps {

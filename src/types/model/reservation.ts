@@ -1,3 +1,5 @@
+import { Status } from "@/types/model/type";
+
 export type Reservation = {
   reservationId: number;
   storeId: number;
@@ -21,24 +23,11 @@ export type Reservation = {
   customerFirstName: string;
 };
 
-export type Status =
-  | typeof IN_PROGRESS
-  | typeof WAITING
-  | typeof PENDING
-  | typeof DONE
-  | typeof CANCELED;
-
-export const WAITING = 0;
-export const IN_PROGRESS = 1;
-export const DONE = 2;
-export const PENDING = 5;
-export const CANCELED = 9;
-
-export type StoreStaff = {
-  staffId: number;
-  storeId: number;
-  lastName: string;
-  firstName: string | null;
-  isActive: boolean;
-  reservationId: number | null;
+export type WaitingInfo = {
+  waitingCount: number | null; // 待ち人数
+  position: number | null; // 順番
+  reservationNumber: number | null; // 予約番号
+  activeStaffCount: number | null; // 活動中スタッフ数
+  lastWaitTime: number | null; // 最後尾の待ち時間
+  estimatedServiceStartTime: string; // 案内開始時間目安
 };

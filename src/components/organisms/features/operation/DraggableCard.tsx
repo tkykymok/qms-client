@@ -2,7 +2,7 @@
 
 import React, { FC, ReactNode } from "react";
 import { useDraggable } from "@dnd-kit/core";
-import { Reservation } from "@/model/type";
+import { Reservation } from "@/types/model/type";
 
 interface DraggableCardProps {
   reservationId: number;
