@@ -41,7 +41,7 @@ const DroppableColumn: FC<DroppableColumnProps> = ({
         duration-300
       `}
     >
-      <div className="sticky top-0 bg-white text-neutral-700 font-medium select-none z-10">
+      <div className="bg-white text-neutral-700 font-medium select-none z-10">
         <div className={`p-5 flex justify-between`}>
           <div className="flex">
             <div>{title}</div>
@@ -51,7 +51,7 @@ const DroppableColumn: FC<DroppableColumnProps> = ({
               </svg>
             </span>
           </div>
-          <div className="flex text-lg">11</div>
+          <div className="flex text-lg">{reservations.length}</div>
         </div>
         <hr />
       </div>

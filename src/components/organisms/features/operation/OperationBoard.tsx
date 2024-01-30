@@ -34,25 +34,6 @@ const OperationBoard = () => {
     return /tablet|ipad|playbook|silk/.test(userAgent);
   };
 
-  const [isMounted, setIsMounted] = useState(false);
-  const [activeCard, setActiveCard] = useState<Reservation>();
-
-  const { data: reservations } = useSWR<Reservation[]>(
-    "reservations",
-    reservationsFetcher,
-    {
-      fallbackData: [],
-    },
-  );
-
-  const { data: storeStaffs } = useSWR<StoreStaff[]>(
-    "storeStaffs",
-    storeStaffsFetcher,
-    {
-      fallbackData: [],
-    },
-  );
-
   const activationOptions = {
     activationConstraint: {
       delay: isTablet() ? 0 : 0, // タブレットの場合、ドラッグ時の遅延を設定 TODO 遅延設定不要？
@@ -65,6 +46,27 @@ const OperationBoard = () => {
     activationOptions,
   );
   const sensors = useSensors(sensor);
+
+  const [isMounted, setIsMounted] = useState(false);
+  const [activeCard, setActiveCard] = useState<Reservation>();
+
+  const { data: reservations } = useSWR<Reservation[]>(
+    "reservations",
+    reservationsFetcher,
+    {
+      revalidateOnReconnect: true,
+      fallbackData: [],
+    },
+  );
+
+  const { data: storeStaffs } = useSWR<StoreStaff[]>(
+    "storeStaffs",
+    storeStaffsFetcher,
+    {
+      revalidateOnReconnect: true,
+      fallbackData: [],
+    },
+  );
 
   // ステータス毎予約一覧
   const reservationsMap = useMemo(() => {
@@ -93,6 +95,13 @@ const OperationBoard = () => {
     });
     return cardMap;
   }, [reservations]);
+
+  const activeStaffs = useMemo(() => {
+    if (!storeStaffs) {
+      return [];
+    }
+    return storeStaffs.filter((staff) => staff.isActive);
+  }, [storeStaffs]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -144,7 +153,7 @@ const OperationBoard = () => {
   const handleDragOver = ({ over }: DragOverEvent) => {};
 
   return (
-    <div className="min-h-screen w-full bg-green-100">
+    <div className="min-h-screen bg-green-100">
       <DndContext
         sensors={sensors}
         onDragEnd={handleDragEnd}
@@ -152,7 +161,7 @@ const OperationBoard = () => {
         onDragOver={handleDragOver}
       >
         <div className="flex space-x-10">
-          <div className="flex-1 flex-col mt-3 space-y-7 overflow-y-auto">
+          <div className="h-screen flex-1 flex-col pt-3 space-y-7 overflow-y-auto">
             {/* 保留カラム */}
             <DroppableColumn
               status={PENDING}
@@ -168,8 +177,8 @@ const OperationBoard = () => {
           </div>
 
           {/* スタッフカラム */}
-          <div className="flex-1 flex flex-col mt-3 space-y-7 overflow-y-auto">
-            {storeStaffs?.map((staff) => (
+          <div className="h-screen flex flex-1 flex-col pt-3 justify-evenly overflow-y-auto">
+            {activeStaffs?.map((staff) => (
               <DroppableColumn
                 key={staff.staffId}
                 status={IN_PROGRESS}
@@ -182,7 +191,7 @@ const OperationBoard = () => {
             ))}
           </div>
 
-          <div className="flex-1 flex-col mt-3 space-y-7 overflow-y-auto">
+          <div className="h-screen flex-1 flex-col pt-3 space-y-7 overflow-y-auto">
             {/* 取消カラム */}
             <DroppableColumn
               status={CANCELED}
