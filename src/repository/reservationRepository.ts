@@ -6,7 +6,7 @@ import {
 
 // 予約一覧を取得する
 export const getReservations = async (): Promise<GetReservationsResponse> => {
-  const response = await axiosInstance.get("/reservation/list");
+  const response = await axiosInstance.get("/reservation/list/today");
   return response.data;
 };
 

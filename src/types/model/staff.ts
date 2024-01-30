@@ -1,8 +1,8 @@
 export type StoreStaff = {
-  staffId: number;
-  storeId: number;
-  lastName: string;
-  firstName: string | null;
-  isActive: boolean;
-  reservationId: number | null;
+  staffId: number; // スタッフID
+  storeId: number; // 店舗ID
+  lastName: string; // スタッフ姓
+  firstName: string | null; // スタッフ名
+  isActive: boolean; // 活動中フラグ
+  reservationId: number | null; // 予約ID
 };
