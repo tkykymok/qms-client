@@ -81,7 +81,7 @@ const MySidebar = () => {
   };
 
   const ArrowIcon = collapsed ? IoIosArrowForward : IoIosArrowBack;
-  const justifyContent = collapsed ? "justify-center" : "justify-end";
+  const justifyContent = collapsed ? "justify-center" : "justify-end mr-2";
 
   const menuItemStyles: MenuItemStyles = {
     root: {
@@ -128,7 +128,7 @@ const MySidebar = () => {
         >
           <div className={`flex ${justifyContent}`}>
             <ArrowIcon
-              className="h-6 w-6 text-neutral-500 cursor-pointer hover:scale-110"
+              className="h-6 w-6 text-neutral-400 cursor-pointer hover:scale-110"
               onClick={() => setCollapsed(!collapsed)}
             />
           </div>
