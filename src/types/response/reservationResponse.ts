@@ -8,6 +8,10 @@ export type GetLastWaitingInfoResponse = {
   waitingInfo: WaitingInfoResponse;
 } & ApiResponse;
 
+export type UpdateReservationStatusResponse = {
+  reservation: ReservationResponse;
+} & ApiResponse;
+
 type ReservationResponse = {
   reservationId: number; // 予約ID
   storeId: number; // 店舗ID

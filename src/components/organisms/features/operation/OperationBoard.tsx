@@ -26,7 +26,8 @@ import CardContext from "@/components/organisms/features/operation/CardContext";
 import { Reservation } from "@/types/model/reservation";
 import { StoreStaff } from "@/types/model/staff";
 import useSWR from "swr";
-import { reservationsFetcher, storeStaffsFetcher } from "@/swr/fether";
+import { storeStaffsFetcher } from "@/swr/fether";
+import { useReservation } from "@/hooks/useReservation";
 
 const OperationBoard = () => {
   const isTablet = () => {
@@ -50,14 +51,7 @@ const OperationBoard = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [activeCard, setActiveCard] = useState<Reservation>();
 
-  const { data: reservations } = useSWR<Reservation[]>(
-    "reservations",
-    reservationsFetcher,
-    {
-      revalidateOnReconnect: true,
-      fallbackData: [],
-    },
-  );
+  const { reservations, handleUpdateReservation } = useReservation();
 
   const { data: storeStaffs } = useSWR<StoreStaff[]>(
     "storeStaffs",
@@ -127,6 +121,17 @@ const OperationBoard = () => {
   const handleDragEnd = ({ active, over }: DragEndEvent) => {
     const { reservation } = active.data.current || {};
     if (!reservation) return;
+
+    const staffId = over?.data.current?.staffId;
+
+    handleUpdateReservation(
+      reservation.reservationId,
+      staffId,
+      over?.data.current?.status as Status,
+      reservation.version,
+    ).then(() => {
+      setActiveCard(undefined);
+    });
 
     // const { reservationId } = reservation;
     // const targetIndex = reservations.findIndex(
