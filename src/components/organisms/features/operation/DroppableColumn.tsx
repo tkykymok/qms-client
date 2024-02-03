@@ -19,15 +19,12 @@ const DroppableColumn: FC<DroppableColumnProps> = ({
   status,
   title,
   staffId = null,
-  onClickHeader,
   reservations = [],
 }) => {
   const { setNodeRef, isOver } = useDroppable({
     id: `${status}-${staffId}`,
     data: { status, staffId },
   });
-
-  // 対象の予約一覧
 
   return (
     <div
@@ -42,7 +39,7 @@ const DroppableColumn: FC<DroppableColumnProps> = ({
       `}
     >
       <div className="bg-white text-neutral-700 font-medium select-none z-10">
-        <div className={`p-5 flex justify-between`}>
+        <div className="p-5 flex justify-between">
           <div className="flex">
             <div>{title}</div>
             <span className="flex transition group-open:rotate-180 group-open:items-end">

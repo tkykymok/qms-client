@@ -2,7 +2,8 @@ import * as ReservationUsecase from "@/usecase/reservationUsecase";
 import { Reservation } from "@/types/model/reservation";
 import { UpdateReservationStatusRequest } from "@/types/request/ReservationRequest";
 import useSWR, { mutate } from "swr";
-import { Status } from "@/types/model/type";
+import { DONE, Status } from "@/types/model/type";
+import { useMemo } from "react";
 
 const reservationsFetcher = async (): Promise<Reservation[]> => {
   return await ReservationUsecase.getReservations();
@@ -15,6 +16,34 @@ export const useReservation = () => {
     revalidateOnReconnect: true,
     fallbackData: [],
   });
+
+  // ステータス毎予約一覧
+  const reservationsMap = useMemo(() => {
+    if (!reservations) {
+      return new Map<Status, Reservation[]>();
+    }
+    // 並び替えたカードをステータスによってMapに格納します。
+    const cardMap = reservations.reduce((map, reservation) => {
+      const statusGroup = map.get(reservation.status) || [];
+      statusGroup.push(reservation);
+      map.set(reservation.status, statusGroup);
+      return map;
+    }, new Map<Status, Reservation[]>());
+
+    // Mapの各エントリに格納された配列を並べ替えます。
+    cardMap.forEach((cardArray, status) => {
+      cardMap.set(
+        status,
+        cardArray.sort((a, b) => {
+          if (status === DONE) {
+            return b.reservationId - a.reservationId;
+          }
+          return a.reservationId - b.reservationId;
+        }),
+      );
+    });
+    return cardMap;
+  }, [reservations]);
 
   const updateReservationStatus = async (
     reservationId: number,
@@ -38,6 +67,9 @@ export const useReservation = () => {
     status: Status,
     version: number,
   ) => {
+    // 必要な情報が揃っていない場合は何もしません。
+    if (!reservationId || status == undefined) return;
+
     // 予約一覧から更新したい予約を探します。
     const targetIndex = reservations!.findIndex(
       (r) => r.reservationId === reservationId,
@@ -60,15 +92,13 @@ export const useReservation = () => {
       );
     }, false);
 
-    // 更新したい予約のID、スタッフのID、新しいステータス、バージョンを指定します。
     await updateReservationStatus(reservationId, staffId, status, version);
-
-    // 予約一覧を再検索します。
     await mutate("reservations");
   };
 
   return {
     reservations,
+    reservationsMap,
     handleUpdateReservation,
   };
 };

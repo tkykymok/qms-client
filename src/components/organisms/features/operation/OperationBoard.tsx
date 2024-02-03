@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   DndContext,
   DragEndEvent,
@@ -23,11 +23,10 @@ import {
 } from "@/types/model/type";
 import DraggableCard from "@/components/organisms/features/operation/DraggableCard";
 import CardContext from "@/components/organisms/features/operation/CardContext";
-import { Reservation } from "@/types/model/reservation";
-import { StoreStaff } from "@/types/model/staff";
-import useSWR from "swr";
-import { storeStaffsFetcher } from "@/swr/fether";
 import { useReservation } from "@/hooks/useReservation";
+import StaffColumn from "@/components/organisms/features/operation/StaffColumn";
+import { useStoreStaff } from "@/hooks/useStoreStaff";
+import { Reservation } from "@/types/model/reservation";
 
 const OperationBoard = () => {
   const isTablet = () => {
@@ -48,58 +47,20 @@ const OperationBoard = () => {
   );
   const sensors = useSensors(sensor);
 
+  // state
   const [isMounted, setIsMounted] = useState(false);
-  const [activeCard, setActiveCard] = useState<Reservation>();
-
-  const { reservations, handleUpdateReservation } = useReservation();
-
-  const { data: storeStaffs } = useSWR<StoreStaff[]>(
-    "storeStaffs",
-    storeStaffsFetcher,
-    {
-      revalidateOnReconnect: true,
-      fallbackData: [],
-    },
+  const [activeCard, setActiveCard] = useState<Reservation | undefined>(
+    undefined,
   );
 
-  // ステータス毎予約一覧
-  const reservationsMap = useMemo(() => {
-    if (!reservations) {
-      return new Map<Status, Reservation[]>();
-    }
-    // 並び替えたカードをステータスによってMapに格納します。
-    const cardMap = reservations.reduce((map, reservation) => {
-      const statusGroup = map.get(reservation.status) || [];
-      statusGroup.push(reservation);
-      map.set(reservation.status, statusGroup);
-      return map;
-    }, new Map<Status, Reservation[]>());
-
-    // Mapの各エントリに格納された配列を並べ替えます。
-    cardMap.forEach((cardArray, status) => {
-      cardMap.set(
-        status,
-        cardArray.sort((a, b) => {
-          if (status === DONE) {
-            return b.reservationId - a.reservationId;
-          }
-          return a.reservationId - b.reservationId;
-        }),
-      );
-    });
-    return cardMap;
-  }, [reservations]);
-
-  const activeStaffs = useMemo(() => {
-    if (!storeStaffs) {
-      return [];
-    }
-    return storeStaffs.filter((staff) => staff.isActive);
-  }, [storeStaffs]);
+  // 予約に関するカスタムフック
+  const { reservationsMap, handleUpdateReservation } = useReservation();
+  // スタッフに関するカスタムフック
+  const { activeStaffs } = useStoreStaff();
 
   useEffect(() => {
     setIsMounted(true);
-  }, [setIsMounted]);
+  }, [isMounted]);
   if (!isMounted) return null;
 
   /**
@@ -121,9 +82,9 @@ const OperationBoard = () => {
   const handleDragEnd = ({ active, over }: DragEndEvent) => {
     const { reservation } = active.data.current || {};
     if (!reservation) return;
-
+    // スタッフIDを取得
     const staffId = over?.data.current?.staffId;
-
+    // 予約のステータスを更新
     handleUpdateReservation(
       reservation.reservationId,
       staffId,
@@ -132,27 +93,6 @@ const OperationBoard = () => {
     ).then(() => {
       setActiveCard(undefined);
     });
-
-    // const { reservationId } = reservation;
-    // const targetIndex = reservations.findIndex(
-    //   (r) => r.reservationId === reservationId,
-    // );
-    //
-    // if (targetIndex === -1) return;
-    //
-    // const updatedReservation = {
-    //   ...reservations[targetIndex],
-    //   status: over?.data.current?.status as Status,
-    //   staffId: over?.data.current?.staffId,
-    // };
-    //
-    // const updatedReservations = [
-    //   ...reservations.slice(0, targetIndex),
-    //   updatedReservation,
-    //   ...reservations.slice(targetIndex + 1),
-    // ];
-    //
-    // setReservations(updatedReservations);
   };
 
   const handleDragOver = ({ over }: DragOverEvent) => {};
@@ -182,19 +122,11 @@ const OperationBoard = () => {
           </div>
 
           {/* スタッフカラム */}
-          <div className="h-screen flex flex-1 flex-col pt-3 justify-evenly overflow-y-auto">
-            {activeStaffs?.map((staff) => (
-              <DroppableColumn
-                key={staff.staffId}
-                status={IN_PROGRESS}
-                title={staff.lastName}
-                staffId={staff.staffId}
-                reservations={reservationsMap.get(IN_PROGRESS)?.filter((r) => {
-                  return r.staffId == staff.staffId;
-                })}
-              />
-            ))}
-          </div>
+          <StaffColumn
+            status={IN_PROGRESS}
+            reservations={reservationsMap.get(IN_PROGRESS) ?? []}
+            activeStaffs={activeStaffs}
+          />
 
           <div className="h-screen flex-1 flex-col pt-3 space-y-7 overflow-y-auto">
             {/* 取消カラム */}
