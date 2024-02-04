@@ -2,7 +2,14 @@ import * as ReservationUsecase from "@/usecase/reservationUsecase";
 import { Reservation } from "@/types/model/reservation";
 import { UpdateReservationStatusRequest } from "@/types/request/ReservationRequest";
 import useSWR, { mutate } from "swr";
-import { DONE, Status } from "@/types/model/type";
+import {
+  CANCELED,
+  DONE,
+  IN_PROGRESS,
+  PENDING,
+  Status,
+  WAITING,
+} from "@/types/model/type";
 import { useMemo } from "react";
 
 const reservationsFetcher = async (): Promise<Reservation[]> => {
@@ -64,23 +71,64 @@ export const useReservation = () => {
   const handleUpdateReservation = async (
     reservationId: number,
     staffId: number,
-    status: Status,
+    newStatus: Status,
     version: number,
   ) => {
     // 必要な情報が揃っていない場合は何もしません。
-    if (!reservationId || status == undefined) return;
-
+    if (!reservationId || newStatus == undefined) return;
     // 予約一覧から更新したい予約を探します。
     const targetIndex = reservations!.findIndex(
       (r) => r.reservationId === reservationId,
     );
     if (targetIndex === -1) return;
+    const targetReservation = reservations![targetIndex];
+    // 現在のステータスが案内済み、キャンセルの場合は何もしません。
+    if (
+      targetReservation.status === DONE ||
+      targetReservation.status === CANCELED
+    ) {
+      return;
+    }
+
+    switch (newStatus) {
+      case WAITING:
+        // 現在のステータスが同じ場合は何もしません。
+        if (targetReservation.status === WAITING) return;
+        break;
+      case PENDING:
+        // 現在のステータスが同じ場合は何もしません。
+        if (targetReservation.status === PENDING) return;
+        break;
+      case IN_PROGRESS:
+        // 現在のステータスが同じかつスタッフが同じ場合は何もしません。
+        if (
+          targetReservation.status === IN_PROGRESS &&
+          targetReservation.staffId === staffId
+        ) {
+          return;
+        }
+        break;
+      case DONE:
+        // 案内済みへは案内中からのみ移動可能
+        if (targetReservation.status !== IN_PROGRESS) {
+          return;
+        }
+        break;
+      case CANCELED:
+        // キャンセルへは保留中からのみ移動可能
+        if (targetReservation.status !== PENDING) {
+          return;
+        }
+        break;
+      default:
+        break;
+    }
 
     // 更新したい予約のステータスを更新します。
     const updatedReservation: Reservation = {
-      ...reservations![targetIndex],
+      ...targetReservation,
       staffId: staffId,
-      status: status,
+      status: newStatus,
     };
 
     // 予約一覧のキャッシュを更新します。
@@ -92,7 +140,7 @@ export const useReservation = () => {
       );
     }, false);
 
-    await updateReservationStatus(reservationId, staffId, status, version);
+    await updateReservationStatus(reservationId, staffId, newStatus, version);
     await mutate("reservations");
   };
 

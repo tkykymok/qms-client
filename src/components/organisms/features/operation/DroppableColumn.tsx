@@ -1,9 +1,16 @@
 "use client";
 
-import React, { FC } from "react";
+import React, { FC, useMemo } from "react";
 import DraggableCard from "@/components/organisms/features/operation/DraggableCard";
 import { useDroppable } from "@dnd-kit/core";
-import { Status } from "@/types/model/type";
+import {
+  CANCELED,
+  DONE,
+  IN_PROGRESS,
+  PENDING,
+  Status,
+  WAITING,
+} from "@/types/model/type";
 import CardContext from "@/components/organisms/features/operation/CardContext";
 import { Reservation } from "@/types/model/reservation";
 
@@ -26,6 +33,45 @@ const DroppableColumn: FC<DroppableColumnProps> = ({
     data: { status, staffId },
   });
 
+  // 予約のステータスによってドラッグ可能かどうかを判定
+  const isDraggable = useMemo(() => {
+    switch (status) {
+      case WAITING:
+        // ステータスがWAITINGの場合、最初の予約のみドラッグ可能
+        return (card: Reservation) => {
+          return (
+            reservations.findIndex(
+              (c) => c.reservationId === card.reservationId,
+            ) === 0
+          );
+        };
+
+      case PENDING:
+      case IN_PROGRESS:
+        // ステータスがPENDINGまたはIN_PROGRESSの場合、全ての予約がドラッグ可能
+        return () => true;
+      case CANCELED:
+      case DONE:
+        // ステータスがCANCELEDまたはDONEの場合、ドラッグ不可
+        return () => false;
+      default:
+        return () => true;
+    }
+  }, [reservations]);
+
+  // 予約のステータスによってヘッダーの背景色を変更
+  const headerColors = {
+    [WAITING]: "bg-waiting",
+    [PENDING]: "bg-pending",
+    [IN_PROGRESS]: "bg-in-progress",
+    [DONE]: "bg-done",
+    [CANCELED]: "bg-cancelled",
+  };
+  const getHeaderColor = (status: Status) => {
+    return headerColors[status] || "";
+  };
+  const headerColor = getHeaderColor(status);
+
   return (
     <div
       ref={setNodeRef}
@@ -39,7 +85,7 @@ const DroppableColumn: FC<DroppableColumnProps> = ({
       `}
     >
       <div className="bg-white text-neutral-700 font-medium select-none z-10">
-        <div className="p-5 flex justify-between">
+        <div className={`p-5 flex justify-between ${headerColor}`}>
           <div className="flex">
             <div>{title}</div>
             <span className="flex transition group-open:rotate-180 group-open:items-end">
@@ -60,7 +106,7 @@ const DroppableColumn: FC<DroppableColumnProps> = ({
               key={reservation.reservationId}
               reservationId={reservation.reservationId}
               reservation={reservation}
-              isDraggable={true}
+              isDraggable={isDraggable(reservation)}
             >
               <CardContext reservation={reservation} isDraggable={true} />
             </DraggableCard>

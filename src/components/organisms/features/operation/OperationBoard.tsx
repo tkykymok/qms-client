@@ -98,7 +98,7 @@ const OperationBoard = () => {
   const handleDragOver = ({ over }: DragOverEvent) => {};
 
   return (
-    <div className="min-h-screen bg-green-100">
+    <div className="min-h-screen">
       <DndContext
         sensors={sensors}
         onDragEnd={handleDragEnd}
@@ -151,6 +151,7 @@ const OperationBoard = () => {
               reservationId={activeCard.reservationId}
               reservation={activeCard}
               isDraggable={false}
+              isDragOverlay={true}
             >
               <CardContext
                 reservation={activeCard}

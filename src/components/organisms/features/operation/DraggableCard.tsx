@@ -9,6 +9,7 @@ interface DraggableCardProps {
   reservation?: Reservation;
   isDraggable: boolean;
   children?: ReactNode;
+  isDragOverlay?: boolean;
 }
 
 const DraggableCard: FC<DraggableCardProps> = ({
@@ -16,6 +17,7 @@ const DraggableCard: FC<DraggableCardProps> = ({
   reservation,
   isDraggable,
   children,
+  isDragOverlay = false,
 }) => {
   const { attributes, listeners, setNodeRef, active } = useDraggable({
     id: reservationId,
@@ -30,6 +32,8 @@ const DraggableCard: FC<DraggableCardProps> = ({
       ref={setNodeRef}
       className={`m-3 
         ${activeReservation?.reservationId === reservationId ? "opacity-20" : ""}
+        ${isDraggable ? "cursor-grab" : "cursor-auto opacity-50"}
+        ${isDragOverlay ? "cursor-grabbing opacity-100" : ""}
      `}
       {...listeners}
       {...attributes}

@@ -57,7 +57,6 @@ const StaffColumn: FC<StaffColumnProps> = ({
 
       // 並び替えをDBに反映
       const activeStaffIds = localActiveStaffs.map((staff) => staff.staffId);
-
       handleSortActiveStaffs(
         arrayMove(activeStaffIds, oldIndex, newIndex),
       ).then(() => {

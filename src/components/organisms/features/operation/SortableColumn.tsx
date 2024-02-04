@@ -51,12 +51,12 @@ const SortableColumn: FC<SortableColumnProps> = ({ staff }) => {
         rounded-md
         bg-white
         shadow-xl
-        border-4
+        border-2
         border-green-300
       `}
     >
       <div className="bg-white text-neutral-700 font-medium select-none z-10">
-        <div className={`p-5 flex justify-between`}>
+        <div className={`p-5 flex justify-between bg-in-progress`}>
           <div className="flex">
             <div>{staff.lastName}</div>
           </div>
