@@ -108,7 +108,10 @@ const DroppableColumn: FC<DroppableColumnProps> = ({
               reservation={reservation}
               isDraggable={isDraggable(reservation)}
             >
-              <CardContext reservation={reservation} isDraggable={true} />
+              <CardContext
+                reservation={reservation}
+                isDraggable={isDraggable(reservation)}
+              />
             </DraggableCard>
           ))}
         </div>

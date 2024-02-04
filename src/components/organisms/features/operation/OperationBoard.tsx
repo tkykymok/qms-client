@@ -151,11 +151,10 @@ const OperationBoard = () => {
               reservationId={activeCard.reservationId}
               reservation={activeCard}
               isDraggable={false}
-              isDragOverlay={true}
             >
               <CardContext
                 reservation={activeCard}
-                isDraggable={false}
+                isDraggable={true}
                 forOverlay={true}
               />
             </DraggableCard>

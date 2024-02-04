@@ -3,11 +3,11 @@
 import React, { FC } from "react";
 import { BsPersonCheckFill } from "react-icons/bs";
 import {
+  Status,
   CANCELED,
   DONE,
   IN_PROGRESS,
   PENDING,
-  Status,
   WAITING,
 } from "@/types/model/type";
 import { Reservation } from "@/types/model/reservation";
@@ -41,20 +41,34 @@ const CardContext: FC<CardContextProps> = ({
     }
   };
 
-  const opacityClass = !isDraggable && !forOverlay ? "opacity-60" : "";
-  const backgroundColor = getBackgroundColor(reservation.status, forOverlay);
+  // 予約のステータスによってメニュー名を表示するかどうかを判定
+  const showMenuStatus = WAITING || IN_PROGRESS;
+
+  const opacityClass = !isDraggable ? "opacity-60" : "";
+  const cursorClass = isDraggable ? "cursor-grab" : "cursor-auto";
+  const overlayClass = forOverlay && "cursor-grabbing";
   const rotationStyle = forOverlay ? { transform: "rotate(3deg)" } : {};
+  const backgroundColor = getBackgroundColor(reservation.status, forOverlay);
 
   return (
     <div
-      className={`p-1 rounded-md shadow-lg select-none ${opacityClass} ${backgroundColor}`}
+      className={`
+        p-1 
+        rounded-md
+        shadow-lg
+        select-none
+        ${opacityClass}
+        ${cursorClass}
+        ${overlayClass}
+        ${backgroundColor}
+      `}
       style={rotationStyle}
     >
       <div className="text-neutral-800 p-3">
         <div className="flex justify-between">
           <div className="flex items-center">
             #{reservation.reservationNumber}
-            {true && reservation.status === WAITING && (
+            {reservation.arrived && reservation.status === WAITING && (
               <div className="ml-2">
                 <BsPersonCheckFill color="green" size={20} />
               </div>
@@ -62,9 +76,8 @@ const CardContext: FC<CardContextProps> = ({
           </div>
           <div>{reservation.customerLastName}</div>
         </div>
-        {!forOverlay &&
-          (reservation.status === WAITING ||
-            reservation.status === IN_PROGRESS) && (
+        {!forOverlay && // forOverlayの場合はメニュー名を表示しない
+          showMenuStatus && (
             <>
               <hr className="bg-white my-1" />
               <div>{reservation.menuName}</div>
