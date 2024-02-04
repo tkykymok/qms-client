@@ -27,6 +27,7 @@ import { useReservation } from "@/hooks/useReservation";
 import StaffColumn from "@/components/organisms/features/operation/StaffColumn";
 import { useStoreStaff } from "@/hooks/useStoreStaff";
 import { Reservation } from "@/types/model/reservation";
+import StaffListArea from "@/components/organisms/features/operation/staffListArea";
 
 const OperationBoard = () => {
   const isTablet = () => {

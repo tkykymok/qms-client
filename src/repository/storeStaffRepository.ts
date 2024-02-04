@@ -1,6 +1,9 @@
 import axiosInstance from "../config/axiosInstance";
 import { GetStoreStaffsResponse } from "@/types/response/staffResponse";
-import { SortActiveStaffRequest } from "@/types/request/StoreStaffRequest";
+import {
+  SortActiveStaffRequest,
+  ToggleActiveStaffRequest,
+} from "@/types/request/StoreStaffRequest";
 
 const BASE_END_POINT = "/store-staff";
 
@@ -15,4 +18,11 @@ export const sortActiveStaffs = async (
   request: SortActiveStaffRequest,
 ): Promise<void> => {
   await axiosInstance.put(`${BASE_END_POINT}/sort-active-staffs`, request);
+};
+
+// スタッフの活動状態を更新する
+export const toggleActiveStaff = async (
+  request: ToggleActiveStaffRequest,
+): Promise<void> => {
+  await axiosInstance.put(`${BASE_END_POINT}/toggle-active-staff`, request);
 };

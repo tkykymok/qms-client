@@ -1,18 +1,17 @@
 import React, { FC, ReactNode } from "react";
-import MySidebar from "@/components/molecules/MySidebar";
 import StaffListArea from "@/components/organisms/features/operation/staffListArea";
 
-interface AuthLayoutProps {
+interface OperationLayoutProps {
   children: ReactNode;
 }
 
-const AuthLayout: FC<AuthLayoutProps> = ({ children }) => {
+const OperationLayout: FC<OperationLayoutProps> = ({ children }) => {
   return (
     <>
-      <MySidebar />
       {children}
+      <StaffListArea />
     </>
   );
 };
 
-export default AuthLayout;
+export default OperationLayout;

@@ -2,7 +2,10 @@ import useSWR from "swr";
 import { StoreStaff } from "@/types/model/staff";
 import * as Usecase from "@/usecase/storeStaffUsecase";
 import { useMemo } from "react";
-import { SortActiveStaffRequest } from "@/types/request/StoreStaffRequest";
+import {
+  SortActiveStaffRequest,
+  ToggleActiveStaffRequest,
+} from "@/types/request/StoreStaffRequest";
 
 export const storeStaffsFetcher = (): Promise<StoreStaff[]> => {
   return Usecase.getStoreStaffs();
@@ -42,17 +45,32 @@ export const useStoreStaff = () => {
         return staff;
       });
     }, false);
-    // 並び順を更新するリクエストを作成します。
-    const request: SortActiveStaffRequest = {
-      staffIds: activeStaffIds,
-    };
+
     // 並び順を更新するリクエストを送信します。
-    await Usecase.sortActiveStaffs(request);
+    await Usecase.sortActiveStaffs(activeStaffIds);
+  };
+
+  const handleToggleActiveStaff = async (targetStaff: StoreStaff) => {
+    await storeStaffMutate((prev) => {
+      return prev!.map((staff) => {
+        if (staff.staffId === targetStaff.staffId) {
+          return {
+            ...targetStaff,
+            isActive: !targetStaff.isActive,
+          };
+        }
+        return staff;
+      });
+    }, false);
+
+    // 活動中スタッフのON/OFFを切り替えるリクエストを送信します。
+    await Usecase.toggleActiveStaff(targetStaff);
   };
 
   return {
     storeStaffs,
     activeStaffs,
     handleSortActiveStaffs,
+    handleToggleActiveStaff,
   };
 };
