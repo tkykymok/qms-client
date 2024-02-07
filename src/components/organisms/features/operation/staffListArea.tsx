@@ -7,16 +7,16 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Image from "next/image";
 import { Switch } from "@headlessui/react";
 import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
-import { userAgentFromString } from "next/server";
 import { useForm } from "react-hook-form";
 import { StoreStaff } from "@/types/model/staff";
+import { useReservation } from "@/hooks/useReservation";
 
 type Inputs = {
   searchName: string;
 };
 
 const StaffListArea = () => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   // サイドバーの内容表示フラグ
   const [showContent, setShowContent] = useState<boolean>(!collapsed);
 
@@ -42,6 +42,7 @@ const StaffListArea = () => {
 
   const { storeStaffs, activeStaffs, handleToggleActiveStaff } =
     useStoreStaff();
+  const { isStaffInProgress } = useReservation();
 
   const displayStaffs = useMemo(() => {
     return storeStaffs?.filter((staff) => {
@@ -116,14 +117,15 @@ const StaffListArea = () => {
                   <div>
                     <Switch
                       checked={staff.isActive}
-                      onChange={(activeFlag) => toggleActiveFlag(staff)}
+                      onChange={() => toggleActiveFlag(staff)}
                       className={`${
                         !staff.isActive
                           ? "bg-gray-200"
-                          : false // 対応中かどうか
-                            ? "bg-blue-200"
-                            : "bg-blue-600"
+                          : isStaffInProgress(staff.staffId) // 対応中かどうか
+                            ? "bg-blue-200" // 対応中の場合
+                            : "bg-blue-600" // 対応中でない場合
                       } relative inline-flex h-6 w-11 items-center rounded-full`}
+                      disabled={isStaffInProgress(staff.staffId)}
                     >
                       <span className="sr-only">Enable notifications</span>
                       <span

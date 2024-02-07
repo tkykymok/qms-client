@@ -144,9 +144,21 @@ export const useReservation = () => {
     await mutate("reservations");
   };
 
+  // スタッフIDを指定して、そのスタッフが担当している予約があるか判定します。
+  const isStaffInProgress = (staffId: number): boolean => {
+    if (!reservationsMap.get(IN_PROGRESS)) {
+      return false;
+    }
+
+    return reservationsMap
+      .get(IN_PROGRESS)!
+      .some((reservation) => reservation.staffId === staffId);
+  };
+
   return {
     reservations,
     reservationsMap,
     handleUpdateReservation,
+    isStaffInProgress,
   };
 };

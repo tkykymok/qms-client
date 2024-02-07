@@ -1,11 +1,7 @@
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { StoreStaff } from "@/types/model/staff";
 import * as Usecase from "@/usecase/storeStaffUsecase";
 import { useMemo } from "react";
-import {
-  SortActiveStaffRequest,
-  ToggleActiveStaffRequest,
-} from "@/types/request/StoreStaffRequest";
 
 export const storeStaffsFetcher = (): Promise<StoreStaff[]> => {
   return Usecase.getStoreStaffs();
@@ -51,20 +47,10 @@ export const useStoreStaff = () => {
   };
 
   const handleToggleActiveStaff = async (targetStaff: StoreStaff) => {
-    await storeStaffMutate((prev) => {
-      return prev!.map((staff) => {
-        if (staff.staffId === targetStaff.staffId) {
-          return {
-            ...targetStaff,
-            isActive: !targetStaff.isActive,
-          };
-        }
-        return staff;
-      });
-    }, false);
-
     // 活動中スタッフのON/OFFを切り替えるリクエストを送信します。
     await Usecase.toggleActiveStaff(targetStaff);
+    // 店舗スタッフを再取得します。
+    await mutate("storeStaffs");
   };
 
   return {
