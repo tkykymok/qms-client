@@ -147,13 +147,14 @@ const StaffListArea = () => {
       {collapsed &&
         activeStaffs?.map((staff) => (
           <div key={staff.staffId} className="p-3 flex">
-            <div className={collapsed ? "w-full" : "w-1/5 flex items-center"}>
+            <div
+              className={`relative w-9 h-9 rounded-full overflow-hidden ${collapsed ? "w-full" : "w-1/5 flex items-center"}`}
+            >
               <Image
-                className={`rounded-full cursor-pointer transition-transform`}
-                height={34}
-                width={34}
                 alt="Avatar"
-                src={"/images/img.png"}
+                className={`cursor-pointer transition-transform`}
+                fill
+                src={staff.imageUrl ? staff.imageUrl : "/images/img.png"}
                 priority
               />
             </div>

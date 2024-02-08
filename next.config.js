@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  images: {
+    domains: ["encrypted-tbn0.gstatic.com"], // ここに許可したいドメインを追加
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

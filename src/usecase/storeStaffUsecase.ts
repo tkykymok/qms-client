@@ -8,7 +8,7 @@ import {
 // 予約一覧を取得する
 export const getStoreStaffs = async (): Promise<StoreStaff[]> => {
   const data = await Repository.getStoreStaffs();
-  return data.storeStaffs as StoreStaff[];
+  return data.storeStaffs as unknown as StoreStaff[];
 };
 
 // 活動中スタッフの並び順を更新する
