@@ -8,6 +8,10 @@ import {
   DndContext,
   DragEndEvent,
   DragStartEvent,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
 import {
   restrictToVerticalAxis,
@@ -33,6 +37,24 @@ const StaffColumn: FC<StaffColumnProps> = ({
   reservations,
   activeStaffs,
 }) => {
+  const isTablet = () => {
+    const userAgent = navigator.userAgent.toLowerCase();
+    return /tablet|ipad|playbook|silk/.test(userAgent);
+  };
+
+  const activationOptions = {
+    activationConstraint: {
+      delay: isTablet() ? 0 : 0, // タブレットの場合、ドラッグ時の遅延を設定 TODO 遅延設定不要？
+      tolerance: 0,
+    },
+  };
+
+  const sensor = useSensor(
+    isTablet() ? TouchSensor : PointerSensor,
+    activationOptions,
+  );
+  const sensors = useSensors(sensor);
+
   const [isStaffSortable, setIsStaffSortable] = useState(false);
   const [localActiveStaffs, setLocalActiveStaffs] = useState<StoreStaff[]>([]);
 
@@ -66,19 +88,19 @@ const StaffColumn: FC<StaffColumnProps> = ({
     }
   };
 
-  const handleOnDoubleClick = () => {
+  const toggleSortable = () => {
     setIsStaffSortable(!isStaffSortable);
   };
 
   return (
     <div
       className="h-screen flex flex-1 flex-col pt-3 justify-evenly overflow-y-auto"
-      onDoubleClick={handleOnDoubleClick}
+      onDoubleClick={toggleSortable}
     >
       {/* 並び替えカラム */}
       {isStaffSortable && (
         <DndContext
-          // sensors={sensors}
+          sensors={sensors}
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
           onDragStart={handleDragStart}
@@ -92,7 +114,7 @@ const StaffColumn: FC<StaffColumnProps> = ({
             >
               <SortableColumn
                 staff={staff}
-                icon={<StaffIcon staff={staff} onClick={handleOnDoubleClick} />}
+                icon={<StaffIcon staff={staff} onClick={toggleSortable} />}
               />
             </SortableContext>
           ))}
@@ -111,7 +133,7 @@ const StaffColumn: FC<StaffColumnProps> = ({
               reservations={reservations!.filter((r) => {
                 return r.staffId == staff.staffId;
               })}
-              icon={<StaffIcon staff={staff} onClick={handleOnDoubleClick} />}
+              icon={<StaffIcon staff={staff} onClick={toggleSortable} />}
             />
           ))}
         </>
