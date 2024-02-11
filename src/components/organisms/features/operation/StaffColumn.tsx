@@ -8,10 +8,6 @@ import {
   DndContext,
   DragEndEvent,
   DragStartEvent,
-  PointerSensor,
-  TouchSensor,
-  useSensor,
-  useSensors,
 } from "@dnd-kit/core";
 import {
   restrictToVerticalAxis,
@@ -25,6 +21,7 @@ import {
 import { StoreStaff } from "@/types/model/staff";
 import { useStoreStaff } from "@/hooks/useStoreStaff";
 import StaffIcon from "@/components/molecules/StaffIcon";
+import useTabletSensor from "@/hooks/useTabletSensor";
 
 interface StaffColumnProps {
   status: Status;
@@ -37,23 +34,7 @@ const StaffColumn: FC<StaffColumnProps> = ({
   reservations,
   activeStaffs,
 }) => {
-  const isTablet = () => {
-    const userAgent = navigator.userAgent.toLowerCase();
-    return /tablet|ipad|playbook|silk/.test(userAgent);
-  };
-
-  const activationOptions = {
-    activationConstraint: {
-      delay: isTablet() ? 0 : 0, // タブレットの場合、ドラッグ時の遅延を設定 TODO 遅延設定不要？
-      tolerance: 0,
-    },
-  };
-
-  const sensor = useSensor(
-    isTablet() ? TouchSensor : PointerSensor,
-    activationOptions,
-  );
-  const sensors = useSensors(sensor);
+  const { sensors } = useTabletSensor();
 
   const [isStaffSortable, setIsStaffSortable] = useState(false);
   const [localActiveStaffs, setLocalActiveStaffs] = useState<StoreStaff[]>([]);

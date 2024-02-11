@@ -7,10 +7,6 @@ import {
   DragOverEvent,
   DragOverlay,
   DragStartEvent,
-  PointerSensor,
-  TouchSensor,
-  useSensor,
-  useSensors,
 } from "@dnd-kit/core";
 import DroppableColumn from "@/components/organisms/features/operation/DroppableColumn";
 import {
@@ -27,26 +23,10 @@ import { useReservation } from "@/hooks/useReservation";
 import StaffColumn from "@/components/organisms/features/operation/StaffColumn";
 import { useStoreStaff } from "@/hooks/useStoreStaff";
 import { Reservation } from "@/types/model/reservation";
-import StaffListArea from "@/components/organisms/features/operation/staffListArea";
+import useTabletSensor from "@/hooks/useTabletSensor";
 
 const OperationBoard = () => {
-  const isTablet = () => {
-    const userAgent = navigator.userAgent.toLowerCase();
-    return /tablet|ipad|playbook|silk/.test(userAgent);
-  };
-
-  const activationOptions = {
-    activationConstraint: {
-      delay: isTablet() ? 0 : 0, // タブレットの場合、ドラッグ時の遅延を設定 TODO 遅延設定不要？
-      tolerance: 0,
-    },
-  };
-
-  const sensor = useSensor(
-    isTablet() ? TouchSensor : PointerSensor,
-    activationOptions,
-  );
-  const sensors = useSensors(sensor);
+  const { sensors } = useTabletSensor();
 
   // state
   const [isMounted, setIsMounted] = useState(false);
