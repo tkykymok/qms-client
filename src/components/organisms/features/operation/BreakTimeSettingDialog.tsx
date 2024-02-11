@@ -25,7 +25,6 @@ const BreakTimeSettingDialog: FC<BreakTimeSettingDialogProps> = ({
       breakEndTime: staff.breakEndTime || "",
     },
   });
-
   const { handleUpdateBreakTime } = useStoreStaff();
 
   const onChangeStartTime = (timeValue: string) => {
@@ -45,7 +44,7 @@ const BreakTimeSettingDialog: FC<BreakTimeSettingDialogProps> = ({
     }
   };
 
-  const deleteBreakTime = async (form: UpdateBreakTimeRequest) => {
+  const clearBreakTime = async (form: UpdateBreakTimeRequest) => {
     const request: UpdateBreakTimeRequest = {
       staffId: form.staffId,
       breakStartTime: null,
@@ -75,7 +74,7 @@ const BreakTimeSettingDialog: FC<BreakTimeSettingDialogProps> = ({
       customFooter={
         <>
           <div>
-            <Button variant={"light"} onClick={onClose}>
+            <Button variant={"secondary"} onClick={onClose}>
               キャンセル
             </Button>
           </div>
@@ -84,16 +83,16 @@ const BreakTimeSettingDialog: FC<BreakTimeSettingDialogProps> = ({
               更新
             </Button>
           </div>
-          <div>
-            <Button variant={"danger"} onClick={handleSubmit(deleteBreakTime)}>
-              削除
-            </Button>
-          </div>
         </>
       }
     >
-      <div className="text-neutral-600 text-sm ">休憩時間: {brakeTime}</div>
-      <div className="p-3 flex justify-between items-center">
+      <div className="text-neutral-600 text-sm flex justify-between">
+        <div>休憩時間: {brakeTime}</div>
+        <Button variant={"light"} onClick={handleSubmit(clearBreakTime)}>
+          クリア
+        </Button>
+      </div>
+      <div className="px-3 py-6 flex justify-between items-center">
         <MyTimeRangePicker
           onChangeStartTime={onChangeStartTime}
           onChangeEndTime={onChangeEndTime}
