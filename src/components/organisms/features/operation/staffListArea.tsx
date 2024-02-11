@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { StoreStaff } from "@/types/model/staff";
 import { useReservation } from "@/hooks/useReservation";
 import BreakTimeSettingDialog from "@/components/organisms/features/operation/BreakTimeSettingDialog";
+import StaffIcon from "@/components/molecules/StaffIcon";
 
 type Inputs = {
   searchName: string;
@@ -115,18 +116,7 @@ const StaffListArea = () => {
             {showContent &&
               displayStaffs?.map((staff) => (
                 <div key={staff.staffId} className="p-3 flex">
-                  <div
-                    className={`relative w-9 h-9 rounded-full overflow-hidden ${collapsed ? "w-full" : "w-1/5 flex items-center"}`}
-                  >
-                    <Image
-                      className={`cursor-pointer transition-transform`}
-                      alt="Avatar"
-                      fill
-                      src={staff.imageUrl ? staff.imageUrl : "/images/img.png"}
-                      priority
-                      onClick={() => openDialog(staff)}
-                    />
-                  </div>
+                  <StaffIcon staff={staff} onClick={() => openDialog(staff)} />
                   <div className="w-4/5 flex items-center justify-between mx-3">
                     <div>
                       {staff.lastName} {staff.firstName}
@@ -164,18 +154,7 @@ const StaffListArea = () => {
           showContent &&
           activeStaffs?.map((staff) => (
             <div key={staff.staffId} className="p-3 flex">
-              <div
-                className={`relative w-9 h-9 rounded-full overflow-hidden ${collapsed ? "w-full" : "w-1/5 flex items-center"}`}
-              >
-                <Image
-                  alt="Avatar"
-                  className={`cursor-pointer transition-transform`}
-                  fill
-                  src={staff.imageUrl ? staff.imageUrl : "/images/img.png"}
-                  priority
-                  onClick={() => openDialog(staff)}
-                />
-              </div>
+              <StaffIcon staff={staff} onClick={() => openDialog(staff)} />
             </div>
           ))}
       </Sidebar>

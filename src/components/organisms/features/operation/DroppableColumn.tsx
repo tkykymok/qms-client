@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useMemo } from "react";
+import React, { FC, ReactNode, useMemo } from "react";
 import DraggableCard from "@/components/organisms/features/operation/DraggableCard";
 import { useDroppable } from "@dnd-kit/core";
 import {
@@ -20,6 +20,7 @@ interface DroppableColumnProps {
   staffId?: number | null;
   onClickHeader?: () => void;
   reservations?: Reservation[];
+  icon?: ReactNode;
 }
 
 const DroppableColumn: FC<DroppableColumnProps> = ({
@@ -27,6 +28,7 @@ const DroppableColumn: FC<DroppableColumnProps> = ({
   title,
   staffId = null,
   reservations = [],
+  icon = null,
 }) => {
   const { setNodeRef, isOver } = useDroppable({
     id: `${status}-${staffId}`,
@@ -57,7 +59,19 @@ const DroppableColumn: FC<DroppableColumnProps> = ({
       default:
         return () => true;
     }
-  }, [reservations]);
+  }, [reservations, status]);
+
+  // 予約のステータスによって折りたたみ可能かどうかを判定
+  const isCollapsable = useMemo(() => {
+    switch (status) {
+      case PENDING:
+      case CANCELED:
+        // ステータスがPENDINGまたはCANCELEDの場合、折りたたみ可
+        return true;
+      default:
+        return false;
+    }
+  }, [status]);
 
   // 予約のステータスによってヘッダーの背景色を変更
   const headerColors = {
@@ -86,13 +100,16 @@ const DroppableColumn: FC<DroppableColumnProps> = ({
     >
       <div className="bg-white text-neutral-700 font-medium select-none z-10">
         <div className={`p-5 flex justify-between ${headerColor}`}>
-          <div className="flex">
+          <div className="flex items-center space-x-2">
+            {icon}
             <div>{title}</div>
-            <span className="flex transition group-open:rotate-180 group-open:items-end">
-              <svg fill="none" height="24" stroke="currentColor" width="24">
-                <path d="M6 9l6 6 6-6"></path>
-              </svg>
-            </span>
+            {isCollapsable && (
+              <span className="flex transition group-open:rotate-180 group-open:items-end">
+                <svg fill="none" height="24" stroke="currentColor" width="24">
+                  <path d="M6 9l6 6 6-6"></path>
+                </svg>
+              </span>
+            )}
           </div>
           <div className="flex text-lg">{reservations.length}</div>
         </div>

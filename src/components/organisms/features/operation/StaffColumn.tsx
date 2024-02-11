@@ -20,6 +20,7 @@ import {
 } from "@dnd-kit/sortable";
 import { StoreStaff } from "@/types/model/staff";
 import { useStoreStaff } from "@/hooks/useStoreStaff";
+import StaffIcon from "@/components/molecules/StaffIcon";
 
 interface StaffColumnProps {
   status: Status;
@@ -89,7 +90,10 @@ const StaffColumn: FC<StaffColumnProps> = ({
               items={activeStaffs!.map((staff) => staff.staffId)}
               strategy={verticalListSortingStrategy}
             >
-              <SortableColumn staff={staff} />
+              <SortableColumn
+                staff={staff}
+                icon={<StaffIcon staff={staff} onClick={handleOnDoubleClick} />}
+              />
             </SortableContext>
           ))}
         </DndContext>
@@ -102,11 +106,12 @@ const StaffColumn: FC<StaffColumnProps> = ({
             <DroppableColumn
               key={staff.staffId}
               status={status}
-              title={staff.lastName}
+              title={`${staff.lastName} ${staff.firstName}`}
               staffId={staff.staffId}
               reservations={reservations!.filter((r) => {
                 return r.staffId == staff.staffId;
               })}
+              icon={<StaffIcon staff={staff} onClick={handleOnDoubleClick} />}
             />
           ))}
         </>

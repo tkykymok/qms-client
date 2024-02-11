@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC } from "react";
+import React, { FC, ReactNode } from "react";
 import DraggableCard from "@/components/organisms/features/operation/DraggableCard";
 import {
   closestCenter,
@@ -26,9 +26,10 @@ import { StoreStaff } from "@/types/model/staff";
 
 interface SortableColumnProps {
   staff: StoreStaff;
+  icon?: ReactNode;
 }
 
-const SortableColumn: FC<SortableColumnProps> = ({ staff }) => {
+const SortableColumn: FC<SortableColumnProps> = ({ staff, icon }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id: staff.staffId,
@@ -57,8 +58,11 @@ const SortableColumn: FC<SortableColumnProps> = ({ staff }) => {
     >
       <div className="bg-white text-neutral-700 font-medium select-none z-10">
         <div className={`p-5 flex justify-between bg-in-progress`}>
-          <div className="flex">
-            <div>{staff.lastName}</div>
+          <div className="flex items-center space-x-2">
+            {icon}
+            <div>
+              {staff.lastName} {staff.firstName}
+            </div>
           </div>
         </div>
         <hr />
