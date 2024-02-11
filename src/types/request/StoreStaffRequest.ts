@@ -9,6 +9,6 @@ export type ToggleActiveStaffRequest = {
 
 export type UpdateBreakTimeRequest = {
   staffId: number;
-  breakStartTime: string;
-  breakEndTime: string;
+  breakStartTime: string | null;
+  breakEndTime: string | null;
 };

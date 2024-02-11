@@ -11,6 +11,7 @@ interface MyDialogProps {
   okText?: string;
   onCancel?: () => void;
   cancelText?: string;
+  customFooter?: ReactNode;
 }
 
 const MyDialog: FC<MyDialogProps> = ({
@@ -22,6 +23,7 @@ const MyDialog: FC<MyDialogProps> = ({
   okText = "OK",
   onCancel,
   cancelText = "Cancel",
+  customFooter = null,
 }) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -60,20 +62,28 @@ const MyDialog: FC<MyDialogProps> = ({
                 <div className="mt-2">{children}</div>
 
                 <div className="mt-4 flex space-x-2 justify-end">
-                  {onCancel && (
-                    <div>
-                      <Button variant={"light"} onClick={onClose}>
-                        {cancelText}
-                      </Button>
-                    </div>
-                  )}
+                  {customFooter ? (
+                    // customFooterがある場合はそれを表示
+                    <>{customFooter}</>
+                  ) : (
+                    // customFooterがない場合はOKとCancelボタンを表示
+                    <>
+                      {onCancel && (
+                        <div>
+                          <Button variant={"light"} onClick={onClose}>
+                            {cancelText}
+                          </Button>
+                        </div>
+                      )}
 
-                  {onOk && (
-                    <div>
-                      <Button variant={"primary"} onClick={onOk}>
-                        {okText}
-                      </Button>
-                    </div>
+                      {onOk && (
+                        <div>
+                          <Button variant={"primary"} onClick={onOk}>
+                            {okText}
+                          </Button>
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
               </Dialog.Panel>
