@@ -2,6 +2,7 @@ import useSWR, { mutate } from "swr";
 import { StoreStaff } from "@/types/model/staff";
 import * as Usecase from "@/usecase/storeStaffUsecase";
 import { useMemo } from "react";
+import { UpdateBreakTimeRequest } from "@/types/request/StoreStaffRequest";
 
 export const storeStaffsFetcher = (): Promise<StoreStaff[]> => {
   return Usecase.getStoreStaffs();
@@ -46,10 +47,17 @@ export const useStoreStaff = () => {
     await Usecase.sortActiveStaffs(activeStaffIds);
   };
 
+  // 活動中スタッフのON/OFFを切り替えます。
   const handleToggleActiveStaff = async (targetStaff: StoreStaff) => {
     // 活動中スタッフのON/OFFを切り替えるリクエストを送信します。
     await Usecase.toggleActiveStaff(targetStaff);
     // 店舗スタッフを再取得します。
+    await mutate("storeStaffs");
+  };
+
+  // 活動スタッフの休憩時間を更新します。
+  const handleUpdateBreakTime = async (form: UpdateBreakTimeRequest) => {
+    await Usecase.updateBreakTime(form);
     await mutate("storeStaffs");
   };
 
@@ -58,5 +66,6 @@ export const useStoreStaff = () => {
     activeStaffs,
     handleSortActiveStaffs,
     handleToggleActiveStaff,
+    handleUpdateBreakTime,
   };
 };

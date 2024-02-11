@@ -21,6 +21,7 @@
     "react-hook-form": "^7.50.0",
     "react-icons": "^5.0.1",
     "react-pro-sidebar": "^1.1.0-alpha.1",
+    "react-timeit": "^1.2.12",
     "swr": "^2.2.4",
     "zustand": "^4.5.0"
   },

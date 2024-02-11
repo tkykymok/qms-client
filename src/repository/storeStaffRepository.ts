@@ -3,6 +3,7 @@ import { GetStoreStaffsResponse } from "@/types/response/staffResponse";
 import {
   SortActiveStaffRequest,
   ToggleActiveStaffRequest,
+  UpdateBreakTimeRequest,
 } from "@/types/request/StoreStaffRequest";
 
 const BASE_END_POINT = "/store-staff";
@@ -25,4 +26,11 @@ export const toggleActiveStaff = async (
   request: ToggleActiveStaffRequest,
 ): Promise<void> => {
   await axiosInstance.put(`${BASE_END_POINT}/toggle-active-staff`, request);
+};
+
+// スタッフの休憩時間を更新する
+export const updateBreakTime = async (
+  request: UpdateBreakTimeRequest,
+): Promise<void> => {
+  await axiosInstance.put(`${BASE_END_POINT}/update-break-time`, request);
 };

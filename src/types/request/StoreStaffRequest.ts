@@ -6,3 +6,9 @@ export type ToggleActiveStaffRequest = {
   staffId: number;
   isActive: boolean; // 変更後の活動中フラグ
 };
+
+export type UpdateBreakTimeRequest = {
+  staffId: number;
+  breakStartTime: string;
+  breakEndTime: string;
+};

@@ -3,6 +3,7 @@ import { StoreStaff } from "@/types/model/staff";
 import {
   SortActiveStaffRequest,
   ToggleActiveStaffRequest,
+  UpdateBreakTimeRequest,
 } from "@/types/request/StoreStaffRequest";
 
 // 予約一覧を取得する
@@ -32,4 +33,11 @@ export const toggleActiveStaff = async (staff: StoreStaff): Promise<void> => {
   };
 
   await Repository.toggleActiveStaff(request);
+};
+
+// スタッフの休憩時間を更新する
+export const updateBreakTime = async (
+  request: UpdateBreakTimeRequest,
+): Promise<void> => {
+  await Repository.updateBreakTime(request);
 };

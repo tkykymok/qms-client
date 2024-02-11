@@ -6,4 +6,6 @@ export type StoreStaff = {
   imageUrl: string | null; // 画像
   isActive: boolean; // 活動中フラグ
   sortOrder: number; // 並び順
+  breakStartTime: string | null; // 休憩開始時間
+  breakEndTime: string | null; // 休憩終了時間
 };
