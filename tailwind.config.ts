@@ -20,7 +20,7 @@ const config: Config = {
         "cancelled-child": "#FFE0E0",
         pending: "#E6E6FA",
         "pending-child": "#F2F2FA",
-        "drag-child": "#98FB98",
+        "drag-child": "#F5F5F5",
       },
       minHeight: {
         20: "5rem",

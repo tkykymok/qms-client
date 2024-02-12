@@ -11,6 +11,7 @@ import {
   WAITING,
 } from "@/types/model/type";
 import { Reservation } from "@/types/model/reservation";
+import Tag from "@/components/atoms/Tag";
 
 interface CardContextProps {
   reservation: Reservation;
@@ -42,7 +43,16 @@ const CardContext: FC<CardContextProps> = ({
   };
 
   // 予約のステータスによってメニュー名を表示するかどうかを判定
-  const showMenuStatus = WAITING || IN_PROGRESS;
+  const showMenu = (status: Status) => {
+    if (forOverlay) return false;
+    switch (status) {
+      case WAITING:
+      case IN_PROGRESS:
+        return true;
+      default:
+        return false;
+    }
+  };
 
   const opacityClass = !isDraggable ? "opacity-60" : "";
   const cursorClass = isDraggable ? "cursor-grab" : "cursor-auto";
@@ -76,13 +86,13 @@ const CardContext: FC<CardContextProps> = ({
           </div>
           <div>{reservation.customerLastName}</div>
         </div>
-        {!forOverlay && // forOverlayの場合はメニュー名を表示しない
-          showMenuStatus && (
-            <>
-              <hr className="bg-white my-1" />
-              <div>{reservation.menuName}</div>
-            </>
-          )}
+        {showMenu(reservation.status) && (
+          <div className="flex justify-end mt-2">
+            <Tag backgroundColor={reservation.tagColor}>
+              <span>{reservation.menuName}</span>
+            </Tag>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -29,6 +29,7 @@ type ReservationResponse = {
   menuName: string; // メニュー名
   price: number; // 価格
   time: number; // 所要時間
+  tagColor: string; // タグ色
   storeName: string; // 店舗名
   homePageUrl: string; // ホームページURL
   customerLastName: string; // 顧客姓

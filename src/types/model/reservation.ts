@@ -17,6 +17,7 @@ export type Reservation = {
   menuName: string;
   price: number;
   time: number;
+  tagColor: string;
   storeName: string | null;
   homePageUrl: string | null;
   customerLastName: string;
