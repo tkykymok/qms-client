@@ -6,6 +6,7 @@ import { UpdateBreakTimeRequest } from "@/types/request/StoreStaffRequest";
 import { StoreStaff } from "@/types/model/staff";
 import { useStoreStaff } from "@/hooks/useStoreStaff";
 import Button from "@/components/atoms/Button";
+import { Typography } from "@/components/molecules/Typography";
 
 interface BreakTimeSettingDialogProps {
   staff: StoreStaff;
@@ -69,7 +70,7 @@ const BreakTimeSettingDialog: FC<BreakTimeSettingDialogProps> = ({
   return (
     <MyDialog
       isOpen={isOpen}
-      title={"休憩時間設定"}
+      title={`休憩時間設定(${staff.lastName})`}
       onClose={onClose}
       customFooter={
         <>
@@ -86,11 +87,15 @@ const BreakTimeSettingDialog: FC<BreakTimeSettingDialogProps> = ({
         </>
       }
     >
-      <div className="text-neutral-600 text-sm flex justify-between">
-        <div>休憩時間: {brakeTime}</div>
-        <Button variant={"light"} onClick={handleSubmit(clearBreakTime)}>
-          クリア
-        </Button>
+      <div className="flex justify-between">
+        <Typography variant="body1" className="text-neutral-600">
+          {brakeTime}
+        </Typography>
+        {staff.breakStartTime && staff.breakEndTime && (
+          <Button variant={"light"} onClick={handleSubmit(clearBreakTime)}>
+            クリア
+          </Button>
+        )}
       </div>
       <div className="px-3 py-6 flex justify-between items-center">
         <MyTimeRangePicker

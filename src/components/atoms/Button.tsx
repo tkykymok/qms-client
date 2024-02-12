@@ -26,7 +26,7 @@ const Button: FC<ButtonProps> = ({
   const getButtonClasses = (variant: Variant) => {
     const baseClasses = `
       inline-flex justify-center rounded-md border border-transparent
-      px-4 py-2 text-sm font-medium focus:outline-none focus-visible:ring-2
+      px-4 py-2 text-lg font-medium focus:outline-none focus-visible:ring-2
       focus-visible:ring-offset-2 select-none`;
 
     const variantClasses = {

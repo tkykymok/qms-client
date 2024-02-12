@@ -79,7 +79,7 @@ const StaffListArea = () => {
     <>
       <Sidebar
         collapsed={collapsed}
-        collapsedWidth="60px"
+        collapsedWidth="64px"
         className="bg-blue-100"
       >
         <div className={`flex ${justifyContent}`}>

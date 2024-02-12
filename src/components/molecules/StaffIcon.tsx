@@ -9,7 +9,7 @@ interface StaffIconProps {
 
 const StaffIcon: FC<StaffIconProps> = ({ staff, onClick }) => {
   return (
-    <div className="relative w-9 h-9 rounded-full overflow-hidden">
+    <div className="relative w-10 h-10 rounded-full overflow-hidden">
       <Image
         alt="Avatar"
         className={`cursor-pointer transition-transform`}

@@ -1,11 +1,13 @@
 import React, { FC, Fragment, ReactNode } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Button from "@/components/atoms/Button";
+import { Typography } from "@/components/molecules/Typography";
 
 interface MyDialogProps {
   isOpen: boolean;
   title?: string;
   children: ReactNode;
+  size?: "sm" | "md" | "lg" | "xl" | "2xl" | "5xl";
   onClose: () => void;
   onOk?: () => void;
   okText?: string;
@@ -18,6 +20,7 @@ const MyDialog: FC<MyDialogProps> = ({
   isOpen,
   title = "",
   children,
+  size = "md",
   onClose,
   onOk,
   okText = "OK",
@@ -25,6 +28,25 @@ const MyDialog: FC<MyDialogProps> = ({
   cancelText = "Cancel",
   customFooter = null,
 }) => {
+  const getDialogSize = () => {
+    switch (size) {
+      case "sm":
+        return "max-w-sm";
+      case "md":
+        return "max-w-md";
+      case "lg":
+        return "max-w-lg";
+      case "xl":
+        return "max-w-xl";
+      case "2xl":
+        return "max-w-2xl";
+      case "5xl":
+        return "max-w-5xl";
+      default:
+        return "max-w-md";
+    }
+  };
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10 select-none" onClose={onClose}>
@@ -51,17 +73,18 @@ const MyDialog: FC<MyDialogProps> = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title
-                  as="h3"
-                  className="text-lg font-medium leading-6 text-neutral-600"
-                >
-                  {title}
+              <Dialog.Panel
+                className={`${getDialogSize()} w-full transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all`}
+              >
+                <Dialog.Title>
+                  <Typography variant="h6" className="text-neutral-600">
+                    {title}
+                  </Typography>
                 </Dialog.Title>
                 <hr className="my-2" />
                 <div className="mt-2">{children}</div>
-
-                <div className="mt-4 flex space-x-2 justify-end">
+                <hr className="my-2" />
+                <div className="mt-4 flex space-x-5 justify-end">
                   {customFooter ? (
                     // customFooterがある場合はそれを表示
                     <>{customFooter}</>
