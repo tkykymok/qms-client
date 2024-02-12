@@ -87,10 +87,12 @@ const CardContext: FC<CardContextProps> = ({
           <div>{reservation.customerLastName}</div>
         </div>
         {showMenu(reservation.status) && (
-          <div className="flex justify-end mt-2">
-            <Tag backgroundColor={reservation.tagColor}>
-              <span>{reservation.menuName}</span>
-            </Tag>
+          <div className="flex justify-end mt-2 space-x-1">
+            {reservation.reservationMenus.map((menu, index) => (
+              <Tag key={menu.storeMenuId} backgroundColor={menu.tagColor}>
+                <span>{menu.menuName}</span>
+              </Tag>
+            ))}
           </div>
         )}
       </div>

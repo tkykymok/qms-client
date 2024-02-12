@@ -26,10 +26,7 @@ type ReservationResponse = {
   notified: boolean; // 通知フラグ
   arrived: boolean; // 到着フラグ
   version: number; // バージョン
-  menuName: string; // メニュー名
-  price: number; // 価格
-  time: number; // 所要時間
-  tagColor: string; // タグ色
+  reservationMenus: ReservationMenuResponse[]; // 予約メニュー
   storeName: string; // 店舗名
   homePageUrl: string; // ホームページURL
   customerLastName: string; // 顧客姓
@@ -43,4 +40,12 @@ type WaitingInfoResponse = {
   activeStaffCount: number | null; // 活動中スタッフ数
   lastWaitTime: number | null; // 最後尾の待ち時間
   estimatedServiceStartTime: string; // 案内開始時間目安
+};
+
+type ReservationMenuResponse = {
+  storeMenuId: number; // 店舗メニューID
+  menuName: string; // メニュー名
+  price: number; // 価格
+  time: number; // 所要時間
+  tagColor: string; // タグ色
 };

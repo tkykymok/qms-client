@@ -14,10 +14,7 @@ export type Reservation = {
   notified: boolean;
   arrived: boolean;
   version: number;
-  menuName: string;
-  price: number;
-  time: number;
-  tagColor: string;
+  reservationMenus: ReservationMenu[];
   storeName: string | null;
   homePageUrl: string | null;
   customerLastName: string;
@@ -31,4 +28,12 @@ export type WaitingInfo = {
   activeStaffCount: number | null; // 活動中スタッフ数
   lastWaitTime: number | null; // 最後尾の待ち時間
   estimatedServiceStartTime: string; // 案内開始時間目安
+};
+
+export type ReservationMenu = {
+  storeMenuId: number;
+  menuName: string;
+  price: number;
+  time: number;
+  tagColor: string;
 };

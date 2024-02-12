@@ -24,6 +24,8 @@ import StaffColumn from "@/components/organisms/features/operation/StaffColumn";
 import { useStoreStaff } from "@/hooks/useStoreStaff";
 import { Reservation } from "@/types/model/reservation";
 import useTabletSensor from "@/hooks/useTabletSensor";
+import MyDialog from "@/components/molecules/MyDialog";
+import { Typography } from "@/components/molecules/Typography";
 
 const OperationBoard = () => {
   const { sensors } = useTabletSensor();
@@ -33,6 +35,7 @@ const OperationBoard = () => {
   const [activeCard, setActiveCard] = useState<Reservation | undefined>(
     undefined,
   );
+  const [isDialogOpen, setIsDialogOpen] = useState(true);
 
   // 予約に関するカスタムフック
   const { reservationsMap, handleUpdateReservation } = useReservation();
@@ -77,6 +80,10 @@ const OperationBoard = () => {
   };
 
   const handleDragOver = ({ over }: DragOverEvent) => {};
+
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+  };
 
   return (
     <div className="min-h-screen">
@@ -142,6 +149,38 @@ const OperationBoard = () => {
           )}
         </DragOverlay>
       </DndContext>
+
+      {/* お会計確認ダイアログ */}
+      <MyDialog
+        isOpen={isDialogOpen}
+        title="お会計"
+        onClose={closeDialog}
+        size="2xl"
+        onOk={closeDialog}
+        okText="確認"
+        onCancel={closeDialog}
+        cancelText="キャンセル"
+      >
+        <div className="p-3 text-neutral-600">
+          <div className="flex justify-between items-end mb-4">
+            <Typography variant="h6">メニュー</Typography>
+            <div className="bg-blue-400 py-1 px-2 rounded-3xl">
+              <Typography variant="body1" className="text-white">
+                カット
+              </Typography>
+            </div>
+          </div>
+
+          <div className="h-96 bg-blue-200 mb-4"></div>
+
+          <Typography variant="h6" className="mb-4">
+            料金
+          </Typography>
+          <Typography variant="h6" className="text-right">
+            合計：¥0
+          </Typography>
+        </div>
+      </MyDialog>
     </div>
   );
 };
