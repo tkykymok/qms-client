@@ -1,4 +1,4 @@
-import { ApiResponse } from "@/types/response/BaseResponse";
+import { ApiResponse } from "@/types/response/baseResponse";
 
 export type GetReservationsResponse = {
   reservations: ReservationResponse[];

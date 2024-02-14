@@ -24,18 +24,19 @@ import StaffColumn from "@/components/organisms/features/operation/StaffColumn";
 import { useStoreStaff } from "@/hooks/useStoreStaff";
 import { Reservation } from "@/types/model/reservation";
 import useTabletSensor from "@/hooks/useTabletSensor";
-import MyDialog from "@/components/molecules/MyDialog";
-import { Typography } from "@/components/molecules/Typography";
+import CheckoutDialog from "@/components/organisms/features/operation/CheckoutDialog";
 
 const OperationBoard = () => {
   const { sensors } = useTabletSensor();
 
-  // state
+  // マウント状態
   const [isMounted, setIsMounted] = useState(false);
+  // ドラッグ中のカード
   const [activeCard, setActiveCard] = useState<Reservation | undefined>(
     undefined,
   );
-  const [isDialogOpen, setIsDialogOpen] = useState(true);
+  // お会計ダイアログの表示状態
+  const [isCheckoutDialogOpen, setIsCheckoutDialogOpen] = useState(false);
 
   // 予約に関するカスタムフック
   const { reservationsMap, handleUpdateReservation } = useReservation();
@@ -66,13 +67,20 @@ const OperationBoard = () => {
   const handleDragEnd = ({ active, over }: DragEndEvent) => {
     const { reservation } = active.data.current || {};
     if (!reservation) return;
-    // スタッフIDを取得
-    const staffId = over?.data.current?.staffId;
+    // 次のステータスとスタッフIDを取得
+    const { status: nextStatus, staffId } = over?.data.current as Reservation;
+
+    if (nextStatus === DONE) {
+      // お会計ダイアログを表示
+      setIsCheckoutDialogOpen(true);
+      return;
+    }
+
     // 予約のステータスを更新
     handleUpdateReservation(
       reservation.reservationId,
       staffId,
-      over?.data.current?.status as Status,
+      nextStatus,
       reservation.version,
     ).then(() => {
       setActiveCard(undefined);
@@ -81,8 +89,8 @@ const OperationBoard = () => {
 
   const handleDragOver = ({ over }: DragOverEvent) => {};
 
-  const closeDialog = () => {
-    setIsDialogOpen(false);
+  const closeCheckoutDialog = () => {
+    setIsCheckoutDialogOpen(false);
   };
 
   return (
@@ -132,7 +140,7 @@ const OperationBoard = () => {
           </div>
         </div>
 
-        <DragOverlay>
+        <DragOverlay style={{ zIndex: 10 }}>
           {activeCard && (
             <DraggableCard
               key={activeCard.reservationId}
@@ -151,36 +159,13 @@ const OperationBoard = () => {
       </DndContext>
 
       {/* お会計確認ダイアログ */}
-      <MyDialog
-        isOpen={isDialogOpen}
-        title="お会計"
-        onClose={closeDialog}
-        size="2xl"
-        onOk={closeDialog}
-        okText="確認"
-        onCancel={closeDialog}
-        cancelText="キャンセル"
-      >
-        <div className="p-3 text-neutral-600">
-          <div className="flex justify-between items-end mb-4">
-            <Typography variant="h6">メニュー</Typography>
-            <div className="bg-blue-400 py-1 px-2 rounded-3xl">
-              <Typography variant="body1" className="text-white">
-                カット
-              </Typography>
-            </div>
-          </div>
-
-          <div className="h-96 bg-blue-200 mb-4"></div>
-
-          <Typography variant="h6" className="mb-4">
-            料金
-          </Typography>
-          <Typography variant="h6" className="text-right">
-            合計：¥0
-          </Typography>
-        </div>
-      </MyDialog>
+      {isCheckoutDialogOpen && activeCard && (
+        <CheckoutDialog
+          isDialogOpen={isCheckoutDialogOpen}
+          closeDialog={closeCheckoutDialog}
+          reservation={activeCard}
+        />
+      )}
     </div>
   );
 };

@@ -54,7 +54,7 @@ export const useReservation = () => {
 
   const updateReservationStatus = async (
     reservationId: number,
-    staffId: number,
+    staffId: number | null,
     status: number,
     version: number,
   ) => {
@@ -70,7 +70,7 @@ export const useReservation = () => {
 
   const handleUpdateReservation = async (
     reservationId: number,
-    staffId: number,
+    staffId: number | null,
     newStatus: Status,
     version: number,
   ) => {

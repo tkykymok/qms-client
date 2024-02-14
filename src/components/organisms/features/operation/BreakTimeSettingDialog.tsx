@@ -75,7 +75,7 @@ const BreakTimeSettingDialog: FC<BreakTimeSettingDialogProps> = ({
       customFooter={
         <>
           <div>
-            <Button variant={"secondary"} onClick={onClose}>
+            <Button variant={"light"} onClick={onClose}>
               キャンセル
             </Button>
           </div>
@@ -87,14 +87,20 @@ const BreakTimeSettingDialog: FC<BreakTimeSettingDialogProps> = ({
         </>
       }
     >
-      <div className="flex justify-between">
-        <Typography variant="body1" className="text-neutral-600">
+      <div className="flex justify-center items-center px-2 pt-2">
+        <Typography variant="subtitle2" className="text-neutral-600">
           {brakeTime}
         </Typography>
         {staff.breakStartTime && staff.breakEndTime && (
-          <Button variant={"light"} onClick={handleSubmit(clearBreakTime)}>
-            クリア
-          </Button>
+          <div className="absolute right-6">
+            <Button
+              variant={"danger"}
+              size={"sm"}
+              onClick={handleSubmit(clearBreakTime)}
+            >
+              取消
+            </Button>
+          </div>
         )}
       </div>
       <div className="px-3 py-6 flex justify-between items-center">

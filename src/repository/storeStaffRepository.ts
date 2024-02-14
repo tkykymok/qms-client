@@ -1,5 +1,5 @@
 import axiosInstance from "../config/axiosInstance";
-import { GetStoreStaffsResponse } from "@/types/response/staffResponse";
+import { GetStoreStaffsResponse } from "@/types/response/storeStaffResponse";
 import {
   SortActiveStaffRequest,
   ToggleActiveStaffRequest,

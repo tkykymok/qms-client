@@ -1,4 +1,4 @@
-import { Status } from "@/types/model/type";
+import { MenuItem, Status, TagColor } from "@/types/model/type";
 
 export type Reservation = {
   reservationId: number;
@@ -30,10 +30,4 @@ export type WaitingInfo = {
   estimatedServiceStartTime: string; // 案内開始時間目安
 };
 
-export type ReservationMenu = {
-  storeMenuId: number;
-  menuName: string;
-  price: number;
-  time: number;
-  tagColor: string;
-};
+export type ReservationMenu = Omit<MenuItem, "disabled">;
