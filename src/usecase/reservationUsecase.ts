@@ -1,11 +1,10 @@
 import * as ReservationRepository from "@/repository/reservationRepository";
 import { Reservation, WaitingInfo } from "@/types/model/reservation";
 import { UpdateReservationStatusRequest } from "@/types/request/ReservationRequest";
-import { UpdateReservationStatusResponse } from "@/types/response/reservationResponse";
 
 // 予約一覧を取得する
-export const getReservations = async (): Promise<Reservation[]> => {
-  const data = await ReservationRepository.getReservations();
+export const getTodayReservations = async (): Promise<Reservation[]> => {
+  const data = await ReservationRepository.getTodayReservations();
   return data.reservations as Reservation[];
 };
 
@@ -18,8 +17,10 @@ export const getLastWaitingInfo = async (
 };
 
 export const updateReservationStatus = async (
+  reservationId: number,
   request: UpdateReservationStatusRequest,
 ): Promise<Reservation> => {
-  return (await ReservationRepository.updateReservationStatus(request))
-    .reservation as Reservation;
+  return (
+    await ReservationRepository.updateReservationStatus(reservationId, request)
+  ).reservation as Reservation;
 };

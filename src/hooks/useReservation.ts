@@ -13,7 +13,7 @@ import {
 import { useMemo } from "react";
 
 const reservationsFetcher = async (): Promise<Reservation[]> => {
-  return await ReservationUsecase.getReservations();
+  return await ReservationUsecase.getTodayReservations();
 };
 
 export const useReservation = () => {
@@ -59,13 +59,15 @@ export const useReservation = () => {
     version: number,
   ) => {
     const request = {
-      reservationId: reservationId,
       staffId: staffId,
       status: status,
       version: version,
     } as UpdateReservationStatusRequest;
 
-    return await ReservationUsecase.updateReservationStatus(request);
+    return await ReservationUsecase.updateReservationStatus(
+      reservationId,
+      request,
+    );
   };
 
   const handleUpdateReservation = async (
