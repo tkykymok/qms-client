@@ -60,6 +60,7 @@ const CheckoutDialog: FC<CheckoutDialogProps> = ({
       null,
       DONE,
       reservation.version,
+      selectedMenus.map((menu) => menu.storeMenuId),
     ).then(() => {
       closeDialog();
     });

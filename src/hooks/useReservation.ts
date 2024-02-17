@@ -57,11 +57,13 @@ export const useReservation = () => {
     staffId: number | null,
     status: number,
     version: number,
+    storeMenuIds: number[],
   ) => {
     const request = {
       staffId: staffId,
       status: status,
       version: version,
+      storeMenuIds: storeMenuIds,
     } as UpdateReservationStatusRequest;
 
     return await ReservationUsecase.updateReservationStatus(
@@ -75,6 +77,7 @@ export const useReservation = () => {
     staffId: number | null,
     newStatus: Status,
     version: number,
+    storeMenuIds: number[] = [],
   ) => {
     // 必要な情報が揃っていない場合は何もしません。
     if (!reservationId || newStatus == undefined) return;
@@ -142,7 +145,13 @@ export const useReservation = () => {
       );
     }, false);
 
-    await updateReservationStatus(reservationId, staffId, newStatus, version);
+    await updateReservationStatus(
+      reservationId,
+      staffId,
+      newStatus,
+      version,
+      storeMenuIds,
+    );
     await mutate("reservations");
   };
 
