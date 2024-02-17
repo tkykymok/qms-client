@@ -1,26 +1,7 @@
 "use client";
 
 import React, { FC, ReactNode } from "react";
-import DraggableCard from "@/components/organisms/features/operation/DraggableCard";
-import {
-  closestCenter,
-  DndContext,
-  DragEndEvent,
-  DragStartEvent,
-  useDroppable,
-} from "@dnd-kit/core";
-import { Status } from "@/types/model/type";
-import CardContext from "@/components/organisms/features/operation/CardContext";
-import { Reservation } from "@/types/model/reservation";
-import {
-  SortableContext,
-  useSortable,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import {
-  restrictToVerticalAxis,
-  restrictToWindowEdges,
-} from "@dnd-kit/modifiers";
+import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { StoreStaff } from "@/types/model/staff";
 

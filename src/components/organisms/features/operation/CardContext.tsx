@@ -2,6 +2,9 @@
 
 import React, { FC } from "react";
 import { BsPersonCheckFill } from "react-icons/bs";
+
+import { Reservation } from "@/types/model/reservation";
+import Tag from "@/components/atoms/Tag";
 import {
   Status,
   CANCELED,
@@ -9,9 +12,7 @@ import {
   IN_PROGRESS,
   PENDING,
   WAITING,
-} from "@/types/model/type";
-import { Reservation } from "@/types/model/reservation";
-import Tag from "@/components/atoms/Tag";
+} from "@/types/constant/status";
 
 interface CardContextProps {
   reservation: Reservation;

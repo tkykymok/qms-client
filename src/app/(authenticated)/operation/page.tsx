@@ -1,6 +1,5 @@
 import React from "react";
 import OperationBoard from "@/components/organisms/features/operation/OperationBoard";
-import StaffListArea from "@/components/organisms/features/operation/staffListArea";
 
 const Page = () => {
   return (

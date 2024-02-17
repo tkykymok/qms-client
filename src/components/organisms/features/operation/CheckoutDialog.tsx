@@ -6,7 +6,7 @@ import Button from "@/components/atoms/Button";
 import { Reservation, ReservationMenu } from "@/types/model/reservation";
 import { useStoreMenu } from "@/hooks/useStoreMenu";
 import { useReservation } from "@/hooks/useReservation";
-import { DONE } from "@/types/model/type";
+import { DONE } from "@/types/constant/status";
 
 interface CheckoutDialogProps {
   isDialogOpen: boolean;

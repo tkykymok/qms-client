@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import SortableColumn from "@/components/organisms/features/operation/SortableColumn";
 import DroppableColumn from "@/components/organisms/features/operation/DroppableColumn";
-import { Status } from "@/types/model/type";
 import { Reservation } from "@/types/model/reservation";
 import {
   closestCenter,
@@ -22,6 +21,7 @@ import { StoreStaff } from "@/types/model/staff";
 import { useStoreStaff } from "@/hooks/useStoreStaff";
 import StaffIcon from "@/components/molecules/StaffIcon";
 import useTabletSensor from "@/hooks/useTabletSensor";
+import { Status } from "@/types/constant/status";
 
 interface StaffColumnProps {
   status: Status;

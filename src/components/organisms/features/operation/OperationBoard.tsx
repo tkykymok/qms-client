@@ -9,14 +9,6 @@ import {
   DragStartEvent,
 } from "@dnd-kit/core";
 import DroppableColumn from "@/components/organisms/features/operation/DroppableColumn";
-import {
-  CANCELED,
-  DONE,
-  IN_PROGRESS,
-  PENDING,
-  Status,
-  WAITING,
-} from "@/types/model/type";
 import DraggableCard from "@/components/organisms/features/operation/DraggableCard";
 import CardContext from "@/components/organisms/features/operation/CardContext";
 import { useReservation } from "@/hooks/useReservation";
@@ -25,6 +17,13 @@ import { useStoreStaff } from "@/hooks/useStoreStaff";
 import { Reservation } from "@/types/model/reservation";
 import useTabletSensor from "@/hooks/useTabletSensor";
 import CheckoutDialog from "@/components/organisms/features/operation/CheckoutDialog";
+import {
+  CANCELED,
+  DONE,
+  IN_PROGRESS,
+  PENDING,
+  WAITING,
+} from "@/types/constant/status";
 
 const OperationBoard = () => {
   const { sensors } = useTabletSensor();

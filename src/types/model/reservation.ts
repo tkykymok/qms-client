@@ -1,4 +1,5 @@
-import { MenuItem, Status, TagColor } from "@/types/model/type";
+import { Status } from "@/types/constant/status";
+import { MenuItem } from "@/types/model/storeMenu";
 
 export type Reservation = {
   reservationId: number;

@@ -3,6 +3,9 @@
 import React, { FC, ReactNode, useMemo } from "react";
 import DraggableCard from "@/components/organisms/features/operation/DraggableCard";
 import { useDroppable } from "@dnd-kit/core";
+
+import CardContext from "@/components/organisms/features/operation/CardContext";
+import { Reservation } from "@/types/model/reservation";
 import {
   CANCELED,
   DONE,
@@ -10,9 +13,7 @@ import {
   PENDING,
   Status,
   WAITING,
-} from "@/types/model/type";
-import CardContext from "@/components/organisms/features/operation/CardContext";
-import { Reservation } from "@/types/model/reservation";
+} from "@/types/constant/status";
 
 interface DroppableColumnProps {
   status: Status;
