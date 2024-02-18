@@ -2,6 +2,8 @@ import * as ReservationUsecase from "@/usecase/reservationUsecase";
 import { Reservation } from "@/types/model/reservation";
 import { UpdateReservationStatusRequest } from "@/types/request/ReservationRequest";
 import useSWR, { mutate } from "swr";
+
+import { useMemo } from "react";
 import {
   CANCELED,
   DONE,
@@ -9,8 +11,7 @@ import {
   PENDING,
   Status,
   WAITING,
-} from "@/types/model/type";
-import { useMemo } from "react";
+} from "@/types/constant/status";
 
 const reservationsFetcher = async (): Promise<Reservation[]> => {
   return await ReservationUsecase.getTodayReservations();
