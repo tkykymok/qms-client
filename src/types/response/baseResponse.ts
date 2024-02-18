@@ -2,7 +2,9 @@ export type ApiResponse = {
   message: string;
 };
 
-export type ErrorResponse = {
+export type ApiErrorResponse = {
+  timestamp: string;
+  status: number;
   error: string;
-  messages: string[];
+  message: string;
 };
