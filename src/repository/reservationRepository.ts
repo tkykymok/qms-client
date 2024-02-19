@@ -2,10 +2,10 @@ import axiosInstance from "../config/axiosInstance";
 import {
   GetLastWaitingInfoResponse,
   GetReservationsResponse,
-  UpdateReservationStatusResponse,
 } from "@/types/response/reservationResponse";
 import { UpdateReservationStatusRequest } from "@/types/request/ReservationRequest";
 import { formatDate } from "@/utils/formatter";
+import { ApiResponse } from "@/types/response/baseResponse";
 
 const BASE_END_POINT = "/reservations";
 
@@ -31,7 +31,7 @@ export const getLastWaitingInfo = async (
 export const updateReservationStatus = async (
   reservationId: number,
   request: UpdateReservationStatusRequest,
-): Promise<UpdateReservationStatusResponse> => {
+): Promise<ApiResponse> => {
   const response = await axiosInstance.put(
     `${BASE_END_POINT}/${reservationId}/update-status`,
     request,

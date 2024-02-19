@@ -1,6 +1,11 @@
-import axios, { AxiosError, HttpStatusCode } from "axios";
-import { ApiErrorResponse } from "@/types/response/baseResponse";
-import { ERROR, INFO, MessageType } from "@/types/constant/messageType";
+import axios, { AxiosError, AxiosResponse, HttpStatusCode } from "axios";
+import { ApiErrorResponse, ApiResponse } from "@/types/response/baseResponse";
+import {
+  ERROR,
+  INFO,
+  MessageType,
+  SUCCESS,
+} from "@/types/constant/messageType";
 import messageStore from "@/store/messageStore";
 
 const axiosInstance = axios.create({
@@ -29,7 +34,8 @@ axiosInstance.interceptors.request.use((config) => {
 // レスポンスインターセプター
 axiosInstance.interceptors.response.use(
   (response) => {
-    // レスポンスデータを加工
+    // レスポンス成功時の処理
+    setSuccessMessages(response);
     return response;
   },
   (error: AxiosError<ApiErrorResponse, any>) => {
@@ -75,6 +81,19 @@ const setErrorMessages = (error: AxiosError<ApiErrorResponse, any>) => {
   if (message) {
     // メッセージが存在する場合、それをメッセージストアに追加
     addMessage(ERROR, message);
+  }
+};
+
+/**
+ * レスポンスからメッセージを取得し、メッセージストアに追加します。
+ * @param response
+ */
+const setSuccessMessages = (response: AxiosResponse<ApiResponse>) => {
+  // レスポンスデータからメッセージを取得
+  const message = response.data.message;
+  if (message) {
+    // メッセージが存在する場合、それをメッセージストアに追加
+    addMessage(SUCCESS, message);
   }
 };
 

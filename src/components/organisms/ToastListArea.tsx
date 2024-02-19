@@ -54,7 +54,7 @@ const ToastListArea: FC<ToastListAreaProps> = ({}) => {
   );
 
   return (
-    <div className="absolute right-0 p-3 z-30">
+    <div className="absolute right-0 p-3 z-50">
       {messages.map((message) => (
         <Toast key={message.id} message={message} closeMessage={closeMessage} />
       ))}

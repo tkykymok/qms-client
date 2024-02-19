@@ -19,8 +19,6 @@ export const getLastWaitingInfo = async (
 export const updateReservationStatus = async (
   reservationId: number,
   request: UpdateReservationStatusRequest,
-): Promise<Reservation> => {
-  return (
-    await ReservationRepository.updateReservationStatus(reservationId, request)
-  ).reservation as Reservation;
+): Promise<void> => {
+  await ReservationRepository.updateReservationStatus(reservationId, request);
 };

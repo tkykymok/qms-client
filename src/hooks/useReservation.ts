@@ -146,14 +146,17 @@ export const useReservation = () => {
       );
     }, false);
 
-    await updateReservationStatus(
-      reservationId,
-      staffId,
-      newStatus,
-      version,
-      storeMenuIds,
-    );
-    await mutate("reservations");
+    try {
+      await updateReservationStatus(
+        reservationId,
+        staffId,
+        newStatus,
+        version,
+        storeMenuIds,
+      );
+    } finally {
+      await mutate("reservations");
+    }
   };
 
   // スタッフIDを指定して、そのスタッフが担当している予約があるか判定します。
