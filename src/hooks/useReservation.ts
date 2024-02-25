@@ -12,18 +12,30 @@ import {
   Status,
   WAITING,
 } from "@/types/constant/status";
+import useAuthStore from "@/store/authStore";
 
-const reservationsFetcher = async (): Promise<Reservation[]> => {
-  return await ReservationUsecase.getTodayReservations();
+const reservationsFetcher = async (
+  storeId: number | null,
+): Promise<Reservation[]> => {
+  if (!storeId) {
+    return [];
+  }
+  return await ReservationUsecase.getTodayReservations(storeId);
 };
 
 export const useReservation = () => {
+  const { storeId } = useAuthStore();
+
   const { data: reservations, mutate: reservationMutate } = useSWR<
     Reservation[]
-  >("reservations", reservationsFetcher, {
-    revalidateOnReconnect: true,
-    fallbackData: [],
-  });
+  >(
+    storeId ? `reservations/${storeId}` : null,
+    () => reservationsFetcher(storeId),
+    {
+      revalidateOnReconnect: true,
+      fallbackData: [],
+    },
+  );
 
   // ステータス毎予約一覧
   const reservationsMap = useMemo(() => {

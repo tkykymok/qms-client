@@ -3,8 +3,10 @@ import { Reservation, WaitingInfo } from "@/types/model/reservation";
 import { UpdateReservationStatusRequest } from "@/types/request/ReservationRequest";
 
 // 予約一覧を取得する
-export const getTodayReservations = async (): Promise<Reservation[]> => {
-  const data = await ReservationRepository.getTodayReservations();
+export const getTodayReservations = async (
+  storeId: number,
+): Promise<Reservation[]> => {
+  const data = await ReservationRepository.getReservations(storeId, new Date());
   return data.reservations as Reservation[];
 };
 

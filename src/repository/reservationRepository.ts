@@ -10,13 +10,15 @@ import { ApiResponse } from "@/types/response/baseResponse";
 const BASE_END_POINT = "/reservations";
 
 // 予約一覧を取得する
-export const getTodayReservations =
-  async (): Promise<GetReservationsResponse> => {
-    const response = await axiosInstance.get(
-      `${BASE_END_POINT}?date=${formatDate(new Date())}`,
-    );
-    return response.data;
-  };
+export const getReservations = async (
+  storeId: number,
+  date: Date,
+): Promise<GetReservationsResponse> => {
+  const response = await axiosInstance.get(
+    `${BASE_END_POINT}/${storeId}?date=${formatDate(date)}`,
+  );
+  return response.data;
+};
 
 // 最後尾の待ち情報を取得する
 export const getLastWaitingInfo = async (
