@@ -2,7 +2,7 @@ import React, { FC, useMemo } from "react";
 import MyDialog from "@/components/molecules/MyDialog";
 import { useForm } from "react-hook-form";
 import MyTimeRangePicker from "@/components/molecules/MyTimeRangePicker";
-import { UpdateBreakTimeRequest } from "@/types/request/StoreStaffRequest";
+import { UpdateBreakTimeRequest } from "@/types/request/storeStaffRequest";
 import { StoreStaff } from "@/types/model/staff";
 import { useStoreStaff } from "@/hooks/useStoreStaff";
 import Button from "@/components/atoms/Button";

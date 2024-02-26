@@ -4,7 +4,7 @@ import {
   SortActiveStaffRequest,
   ToggleActiveStaffRequest,
   UpdateBreakTimeRequest,
-} from "@/types/request/StoreStaffRequest";
+} from "@/types/request/storeStaffRequest";
 
 const BASE_END_POINT = "/store-staff";
 

@@ -4,7 +4,7 @@ import {
   SortActiveStaffRequest,
   ToggleActiveStaffRequest,
   UpdateBreakTimeRequest,
-} from "@/types/request/StoreStaffRequest";
+} from "@/types/request/storeStaffRequest";
 
 // 予約一覧を取得する
 export const getStoreStaffs = async (): Promise<StoreStaff[]> => {

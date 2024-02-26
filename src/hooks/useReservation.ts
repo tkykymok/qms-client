@@ -1,6 +1,6 @@
 import * as ReservationUsecase from "@/usecase/reservationUsecase";
 import { Reservation } from "@/types/model/reservation";
-import { UpdateReservationStatusRequest } from "@/types/request/ReservationRequest";
+import { UpdateReservationStatusRequest } from "@/types/request/reservationRequest";
 import useSWR, { mutate } from "swr";
 
 import { useMemo } from "react";

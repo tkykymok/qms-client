@@ -2,7 +2,7 @@ import useSWR, { mutate } from "swr";
 import { StoreStaff } from "@/types/model/staff";
 import * as Usecase from "@/usecase/storeStaffUsecase";
 import { useMemo } from "react";
-import { UpdateBreakTimeRequest } from "@/types/request/StoreStaffRequest";
+import { UpdateBreakTimeRequest } from "@/types/request/storeStaffRequest";
 
 export const storeStaffsFetcher = (): Promise<StoreStaff[]> => {
   return Usecase.getStoreStaffs();

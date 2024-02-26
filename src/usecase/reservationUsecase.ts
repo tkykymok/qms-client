@@ -1,6 +1,6 @@
 import * as ReservationRepository from "@/repository/reservationRepository";
 import { Reservation, WaitingInfo } from "@/types/model/reservation";
-import { UpdateReservationStatusRequest } from "@/types/request/ReservationRequest";
+import { UpdateReservationStatusRequest } from "@/types/request/reservationRequest";
 
 // 予約一覧を取得する
 export const getTodayReservations = async (

@@ -3,9 +3,9 @@ import {
   GetLastWaitingInfoResponse,
   GetReservationsResponse,
 } from "@/types/response/reservationResponse";
-import { UpdateReservationStatusRequest } from "@/types/request/ReservationRequest";
 import { formatDate } from "@/utils/formatter";
 import { ApiResponse } from "@/types/response/baseResponse";
+import { UpdateReservationStatusRequest } from "@/types/request/reservationRequest";
 
 const BASE_END_POINT = "/reservations";
 
